@@ -1,11 +1,11 @@
 # Mobile-Team-care-Deprescribing-Application-with-Gen-AI-ChatBot
 For Integration and Deployment
 
-## Introduction
+# Introduction
 ------------
 The MultiPDF Chat App is a Python application that allows you to chat with multiple PDF documents. You can ask questions about the PDFs using natural language, and the application will provide relevant responses based on the content of the documents. This app utilizes a language model to generate accurate answers to your queries. Please note that the app will only respond to questions related to the loaded PDFs.
 
-## How It Works
+# How It Works
 ------------
 
 ![MultiPDF Chat App Diagram](./docs/PDF-LangChain.jpg)
@@ -22,7 +22,7 @@ The application follows these steps to provide responses to your questions:
 
 5. Response Generation: The selected chunks are passed to the language model, which generates a response based on the relevant content of the PDFs.
 
-## Dependencies and Installation
+# Dependencies and Installation
 ----------------------------
 To install the MultiPDF Chat App, please follow these steps:
 
@@ -43,7 +43,7 @@ OPENAI_API_KEY=your_secrit_api_key
 
 feat: add readme
 
-## Usage
+# Usage
 -----
 To use the MultiPDF Chat App, follow these steps:
 
