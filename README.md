@@ -1,9 +1,7 @@
 # Mobile-Team-care-Deprescribing-Application-with-Gen-AI-ChatBot
 For Integration and Deployment
 
-> You can find the tutorial for this project on [YouTube](https://youtu.be/dXxQ0LR-3Hg).
-
-> You can understand this project better on [YouTube]([https://youtu.be/dXxQ0LR-3Hg](https://www.youtube.com/watch?v=T-D1OfcDW1M&list=PLEJnINKHyZIBZZxkSNafHQMDdg5Lf3O3W&pp=gAQB)).
+> You can understand this project better on [YouTube]([https://www.youtube.com/watch?v=T-D1OfcDW1M&list=PLEJnINKHyZIBZZxkSNafHQMDdg5Lf3O3W&pp=gAQB]).
 
 # Introduction
 ------------
