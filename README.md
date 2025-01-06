@@ -14,7 +14,7 @@ The TDA chatbot is a robust AI-powered information retrieval and conversational 
 
 The application follows these steps to respond to your questions:
 
-1. Admin and Document Management:   Administrators manage the system through an Admin UI, where documents are uploaded and organized into collections. The Admin UI facilitates chunking and embedding documents using a clinical variant of the BioBERT embedding model.
+1. Admin and Document Management: Administrators manage the system through an Admin UI, where documents are uploaded and organized into collections. The Admin UI facilitates chunking and embedding documents using a embedding model.
 The embedded documents are indexed and stored in ChromaDB, a vector database optimized for high-speed and scalable retrieval.
 
 2. Document Ingestion: The ingestion pipeline preprocesses the uploaded documents by chunking them into smaller parts, embedding the content, and indexing the resulting embeddings in ChromaDB.
@@ -32,11 +32,11 @@ This augmented prompt is processed by a generation module powered by OpenAI and 
 
 6. Database Integration: An RDBMS database maintains user information, chat history, and system status, ensuring a seamless user experience and robust data management.
 
-7. Response Delivery:   The generated response is sent back to the user through the chatbot interface, completing the conversational loop.
+7. Response Delivery: The generated response is sent back to the user through the chatbot interface, completing the conversational loop.
 
 # Dependencies and Installation
 ----------------------------
-To install the MultiPDF Chat App, please follow these steps:
+To install the TDA Chatbot, please follow these steps:
 
 1. Clone the repository to your local machine.
 
@@ -45,7 +45,7 @@ To install the MultiPDF Chat App, please follow these steps:
    pip install -r Requirements.txt
    ```
 
-3. Obtain an API key from OpenAI and add it to the `.env` file in the project directory.
+3. Obtain an API key from OpenAI and Gimini and add it to the `.env` file in the project directory.
    ```
    CHROMA_PATH = "C:\VS_CODES\RAG\Collections"
    COLLECTION_NAME="Unstructured_data"
