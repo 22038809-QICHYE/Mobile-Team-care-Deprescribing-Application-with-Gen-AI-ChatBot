@@ -35,7 +35,9 @@ To install the MultiPDF Chat App, please follow these steps:
 
 3. Obtain an API key from OpenAI and add it to the `.env` file in the project directory.
    ```
-   OPENAI_API_KEY=your_secrit_api_key
+   CHROMA_PATH = "C:\VS_CODES\RAG\Collections"
+   COLLECTION_NAME="Unstructured_data"
+   REDIS_URL="redis://default:ytXIaoFI74f4TT8LfSBlfBuYCNFRjv3B@redis-12846.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12846"
    ```
 
 # Usage
