@@ -1,0 +1,91 @@
+from Retrieval import Retriever
+from Re_ranker import CrossEncoderReRanker
+from tabulate import tabulate
+
+class Augmentation:
+    def __init__(self):
+        """Initializes the Query Augmentor."""
+        pass
+
+    def augment_query_with_document(self, user_query, documents):
+        """
+        Augments the user query with the content of all documents provided.
+
+        :param user_query: The original user query.
+        :param documents: A list of documents, each containing 'page_content'.
+        :return: A dictionary with the query and combined document contexts.
+        """
+        if not user_query.strip():
+            raise ValueError("User query is empty. Please provide a valid query.")
+
+        if not documents or not isinstance(documents, list):
+            raise ValueError("Invalid documents. Ensure it is a list of documents.")
+
+        # Extract and combine content from all documents
+        combined_context = "\n\n".join(
+            doc.page_content.strip() for doc in documents if hasattr(doc, "page_content")
+        )
+
+        if not combined_context:
+            raise ValueError("No valid content found in the provided documents.")
+
+        # Create the augmented query data
+        augmented_query_data = {
+            "Query": user_query.strip(),
+            "Content": combined_context
+        }
+
+        return augmented_query_data
+
+    def format_augmented_query(self, augmented_query_data):
+        """
+        Formats the augmented query using tabulate for better readability.
+
+        :param augmented_query_data: A dictionary containing the query and context.
+        :return: A formatted string representing the augmented query.
+        """
+        table_data = [[key, value] for key, value in augmented_query_data.items()]
+        return tabulate(table_data, headers=["Field", "Content"], tablefmt="grid")
+
+
+def test_script1():
+    retriever = Retriever()
+    reranker = CrossEncoderReRanker()
+    augmentor = Augmentation()
+
+    user_query = "What is an example of document retrieval?"
+
+    print("Retrieving documents...")
+    retrieved_documents = retriever.retrieve_similarity_score_threshold(user_query)
+
+    if not retrieved_documents:
+        print("No documents retrieved.")
+        return "No relevant documents found."
+
+    print("Re-ranking documents...")
+    reranked_documents = reranker.re_rank_documents(user_query, retrieved_documents)
+
+    if not reranked_documents:
+        print("No documents were re-ranked successfully.")
+        return "No relevant documents found."
+
+    try:
+        print("Augmenting query with all ranked documents...")
+        augmented_query_data = augmentor.augment_query_with_document(user_query, reranked_documents)
+        formatted_query = augmentor.format_augmented_query(augmented_query_data)
+
+        print("\n=== Augmented Query ===")
+        print(formatted_query)
+    except ValueError as ve:
+        print(f"ValueError occurred: {ve}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+
+if __name__ == "__main__":
+    try:
+        test_script1()
+    except Exception as e:
+        print(f"Critical error during testing: {e}")
+    finally:
+        print("Testing complete.")
