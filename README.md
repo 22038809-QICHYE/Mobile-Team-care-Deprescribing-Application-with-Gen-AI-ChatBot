@@ -14,7 +14,7 @@ The TDA chatbot is a robust AI-powered information retrieval and conversational 
 
 The application follows these steps to respond to your questions:
 
-1. Admin and Document Management: Administrators manage the system through an Admin UI, where documents are uploaded and organized into collections. The Admin UI facilitates chunking and embedding documents using a clinical variant of the BioBERT embedding model.
+1. Admin and Document Management:   Administrators manage the system through an Admin UI, where documents are uploaded and organized into collections. The Admin UI facilitates chunking and embedding documents using a clinical variant of the BioBERT embedding model.
 The embedded documents are indexed and stored in ChromaDB, a vector database optimized for high-speed and scalable retrieval.
 
 2. Document Ingestion: The ingestion pipeline preprocesses the uploaded documents by chunking them into smaller parts, embedding the content, and indexing the resulting embeddings in ChromaDB.
