@@ -1,11 +1,11 @@
 # Mobile-Team-care-Deprescribing-Application-with-Gen-AI-ChatBot
 For Integration and Deployment
 
-> You can understand the components of this project better on [YouTube playlist](https://www.youtube.com/watch?v=T-D1OfcDW1M&list=PLEJnINKHyZIBZZxkSNafHQMDdg5Lf3O3W&pp=gAQB).
+> You can understand the components of this project better at [YouTube playlist](https://www.youtube.com/watch?v=T-D1OfcDW1M&list=PLEJnINKHyZIBZZxkSNafHQMDdg5Lf3O3W&pp=gAQB).
 
 # Introduction
 ------------
-The TDA Chat App is a Python application that allows you to chat with multiple PDF documents. You can ask questions about the PDFs using natural language, and the application will provide relevant responses based on the content of the documents. This app utilizes a language model to generate accurate answers to your queries. Please note that the app will only respond to questions related to the loaded PDFs.
+The TDA chatbot is a robust AI-powered information retrieval and conversational platform designed to enable users to access relevant documents and receive intelligent responses efficiently. By combining Natural Language Understanding (NLU), advanced embedding models, and retrieval-augmented generation (RAG), the system streamlines document ingestion, retrieval, and conversational response generation. With its modular architecture, the platform supports document management via an Admin UI, high-accuracy retrieval through ChromaDB, and dynamic response generation using large language models like OpenAI and Gemini.
 
 # How It Works
 ------------
@@ -14,18 +14,26 @@ The TDA Chat App is a Python application that allows you to chat with multiple P
 
 The application follows these steps to respond to your questions:
 
-1. PDF/CSV Loading: The app reads multiple PDF or CSV documents and extracts their text content.
-
-2. Text Chunking: The extracted text is divided into smaller chunks that can be processed effectively.
-
-3. Vector Database: The chunks will be embedded via an embedding model and stored in the chromaDB.
-
-5. Language Model: The application utilizes a language model to generate vector representations (embeddings) of the text chunks.
-
-6. Similarity Matching: When you ask a question, the app compares it with the text chunks and identifies the most semantically similar ones.
-
-7. Response Generation: The selected chunks are passed to the language model, which generates a response based on the relevant content of the PDFs.
-
+1. Admin and Document Management
+Administrators manage the system through an Admin UI, where documents are uploaded and organized into collections. The Admin UI facilitates chunking and embedding documents using a clinical variant of the BioBERT embedding model.
+The embedded documents are indexed and stored in ChromaDB, a vector database optimized for high-speed and scalable retrieval.
+2. Document Ingestion
+The ingestion pipeline preprocesses the uploaded documents by chunking them into smaller parts, embedding the content, and indexing the resulting embeddings in ChromaDB.
+This process ensures the database is ready for efficient similarity-based searches and retrieval.
+3. User Query and Interaction
+Users interact with the system through a web-based chatbot built on Streamlit. The chatbot processes user queries along with the conversation's chat history to maintain context.
+The chatbot uses an NLU engine (Dialogflow) to interpret the query and generate a structured prompt for further processing.
+4. Retriever Module
+The query is embedded using the same BioBERT model to ensure embedding compatibility with ChromaDB.
+The embedded query is used to retrieve relevant documents from ChromaDB based on vector similarity.
+Retrieved documents are reranked to identify the most relevant ones, leveraging a re-ranking model for higher precision.
+5. Augmentation and Response Generation
+The top-ranked document is selected and combined with the user query and chat history to form an augmented prompt.
+This augmented prompt is processed by a generation module powered by OpenAI and Gemini, which generates contextually rich and accurate responses.
+6. Database Integration
+An RDBMS database maintains user information, chat history, and system status, ensuring a seamless user experience and robust data management.
+7. Response Delivery
+The generated response is sent back to the user through the chatbot interface, completing the conversational loop.
 # Dependencies and Installation
 ----------------------------
 To install the MultiPDF Chat App, please follow these steps:
