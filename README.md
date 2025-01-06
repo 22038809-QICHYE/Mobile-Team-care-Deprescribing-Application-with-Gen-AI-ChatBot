@@ -14,26 +14,33 @@ The TDA chatbot is a robust AI-powered information retrieval and conversational 
 
 The application follows these steps to respond to your questions:
 
-1. Admin and Document Management
+1. Admin and Document Management:
 Administrators manage the system through an Admin UI, where documents are uploaded and organized into collections. The Admin UI facilitates chunking and embedding documents using a clinical variant of the BioBERT embedding model.
 The embedded documents are indexed and stored in ChromaDB, a vector database optimized for high-speed and scalable retrieval.
-2. Document Ingestion
+
+2. Document Ingestion:
 The ingestion pipeline preprocesses the uploaded documents by chunking them into smaller parts, embedding the content, and indexing the resulting embeddings in ChromaDB.
 This process ensures the database is ready for efficient similarity-based searches and retrieval.
-3. User Query and Interaction
+
+3. User Query and Interaction:
 Users interact with the system through a web-based chatbot built on Streamlit. The chatbot processes user queries along with the conversation's chat history to maintain context.
 The chatbot uses an NLU engine (Dialogflow) to interpret the query and generate a structured prompt for further processing.
-4. Retriever Module
+
+4. Retriever Module:
 The query is embedded using the same BioBERT model to ensure embedding compatibility with ChromaDB.
 The embedded query is used to retrieve relevant documents from ChromaDB based on vector similarity.
 Retrieved documents are reranked to identify the most relevant ones, leveraging a re-ranking model for higher precision.
-5. Augmentation and Response Generation
+
+5. Augmentation and Response Generation:
 The top-ranked document is selected and combined with the user query and chat history to form an augmented prompt.
 This augmented prompt is processed by a generation module powered by OpenAI and Gemini, which generates contextually rich and accurate responses.
-6. Database Integration
+
+6. Database Integration:
 An RDBMS database maintains user information, chat history, and system status, ensuring a seamless user experience and robust data management.
-7. Response Delivery
+
+7. Response Delivery:
 The generated response is sent back to the user through the chatbot interface, completing the conversational loop.
+
 # Dependencies and Installation
 ----------------------------
 To install the MultiPDF Chat App, please follow these steps:
