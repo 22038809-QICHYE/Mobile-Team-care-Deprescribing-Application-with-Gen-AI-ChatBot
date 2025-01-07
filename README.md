@@ -23,7 +23,7 @@ This process ensures the database is ready for efficient similarity-based search
 3. User Query and Interaction: Users interact with the system through a web-based chatbot built on Streamlit. The chatbot processes user queries along with the conversation's chat history to maintain context.
 The chatbot uses an NLU engine (Dialogflow) to interpret the query and generate a structured prompt for further processing.
 
-4. Retriever Module: The query is embedded using the same BioBERT model to ensure embedding compatibility with ChromaDB.
+4. Retriever Module: The query is embedded using the same embedding model to ensure embedding compatibility with ChromaDB.
 The embedded query is used to retrieve relevant documents from ChromaDB based on vector similarity.
 Retrieved documents are reranked to identify the most relevant ones, leveraging a re-ranking model for higher precision.
 
