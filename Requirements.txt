@@ -1,0 +1,17 @@
+langchain>=0.3.14
+langchain-huggingface>=0.0.3
+langchain-core>=0.3.29
+langchain-community>=0.2.16
+langchain-chroma>=0.2.0
+langchain-redis>=0.1.2
+chromadb
+
+python-dotenv 
+tabulate
+
+Flask>=2.0.0
+Flask-SQLAlchemy>=3.0.0
+SQLAlchemy>=1.4.0
+os-sys
+datetime
+
