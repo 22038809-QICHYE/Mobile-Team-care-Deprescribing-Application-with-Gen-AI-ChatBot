@@ -1,0 +1,88 @@
+Drug(s),Pharmacological class,Rationale,Recommendation,Quality of evidence,Strength of recommendation
+Dabigatran     ,Direct thrombin inhibitors,Increased risk of GI bleeding compared with warfarin (based on head-to-head clinical trials) and of GI bleeding and major bleeding compared with apixaban (based on observational studies and meta-analyses) in older adults when used for long-term treatment of nonvalvular atrial fibrillation or VTE.                        ,"Use caution in selecting dabigatran over other DOACs (e.g., apixaban) for long-term treatment of nonvalvular atrial fibrillation or VTE. 	      
+When selecting among DOACs and choosing a dosage, pay special consideration to kidney function, indication, and body weight.		",Moderate,Strong
+Prasugrel,Antiplatelets,"Increased risk of major bleeding in older adults compared with clopidogrel, especially among those 75 years old and older. However, this risk may be offset by cardiovascular benefits in select patients.","Use with caution, particularly in adults 75 years old and older.
+
+If Prasugrel is used, consider a lower dose (5 mg) for those 75 years old and older.",Moderate,Strong
+Ticagrelor,Antiplatelets,"Increased risk of major bleeding in older adults compared with clopidogrel, especially among those 75 years old and older. However, this risk may be offset by cardiovascular benefits in select patients.","Use with caution, particularly in adults 75 years old and older.
+
+If Prasugrel is used, consider a lower dose (5 mg) for those 75 years old and older.",Moderate,Strong
+Mirtazapine        ,"Noradrenergic, specific serotonergic antidepressants",May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Duloxetine,Serotonin and norepinephrine reuptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Venlafaxine,Serotonin and norepinephrine reuptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Desvenlafaxine,Serotonin and norepinephrine reuptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Escitalopram,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Fluoxetine,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Fluvoxamine,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Paroxetine,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Sertraline,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Vortioxetine,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Citalopram,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Dapoxetine,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Trazodone,Selective serotonin re-uptake inhibitors,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Amitriptyline,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Clomipramine,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Dothiepin,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Dosulepin,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Imipramine,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Nortriptyline,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Doxepin,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Amoxapine,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Desipramine,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Protriptyline,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Tianeptine,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Trimipramine,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Melitracen,Tricyclic antidepressants,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Carbamazepine,Antiepileptics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Oxcarbazepine ,Antiepileptics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Chlorpromazine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Fluphenazine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Haloperidol,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Perphenazine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Aripiprazole,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Brexpiprazole,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Cariprazine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Clozapine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Lurasidone,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Olanzapine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Paliperidone,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Pimavanserin,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Quetiapine,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Risperidone,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Ziprasidone,Antipsychotics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Furosemide,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Frusemide,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Bumetanide,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Torsemide,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Torasemide,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Ethacrynic acid,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Etacrynic acid,Loop diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Hydrochlorothiazide,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Indapamide,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Metolazone,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Chlorthalidone,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Chlortalidone,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Bendroflumethiazide,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Chlorothiazide,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Methyclothiazide,Thiazide diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Spironolactone,Potassium-sparing diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Amiloride,Potassium-sparing diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Triamterene,Potassium-sparing diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Eplerenone,Potassium-sparing diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Finerenone,Potassium-sparing diuretics,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Tramadol    ,Opioids,May exacerbate or cause SIADH or hyponatremia; monitor sodium levels closely when starting or changing dosages in older adults.,Use with caution,Moderate,Strong
+Dextromethorphan/quinidine                ,N-Methyl-D-Aspartate receptor antagonists,Limited efficacy in patients with behavioral symptoms of dementia (does not apply to the treatment of pseudobulbar affect). May increase the risk of falls and concerns with clinically significant drug interactions and with use in those with heart failure.,Use with caution,Moderate,Strong
+Trimethoprim/sulfamethoxazole,Sulfonamide antibiotics,"Increased risk of hyperkalemia when used concurrently with an ACEI, ARB, or ARNI in presence of decreased CrCl.	","Use with caution in patients on ACEI, ARB, or ARNI and decreased CrCl.",Low,Strong
+Co-trimoxazole,Sulfonamide antibiotics,"Increased risk of hyperkalemia when used concurrently with an ACEI, ARB, or ARNI in presence of decreased CrCl.	","Use with caution in patients on ACEI, ARB, or ARNI and decreased CrCl.",Low,Strong
+Canagliflozin,Sodium-glucose co-transporter inhibitors,"Older adults may be at increased risk of urogenital infections, particularly women in the first month of treatment. 
+An increased risk of euglycemic diabetic ketoacidosis has also been seen in older adults.","Use with caution.
+Monitor patients for urogenital infections and ketoacidosis.",Moderate,Weak
+Dapagliflozin,Sodium-glucose co-transporter inhibitors,"Older adults may be at increased risk of urogenital infections, particularly women in the first month of treatment. 
+An increased risk of euglycemic diabetic ketoacidosis has also been seen in older adults.","Use with caution.
+Monitor patients for urogenital infections and ketoacidosis.",Moderate,Weak
+Empagliflozin,Sodium-glucose co-transporter inhibitors,"Older adults may be at increased risk of urogenital infections, particularly women in the first month of treatment. 
+An increased risk of euglycemic diabetic ketoacidosis has also been seen in older adults.","Use with caution.
+Monitor patients for urogenital infections and ketoacidosis.",Moderate,Weak
+Ertugliflozin,Sodium-glucose co-transporter inhibitors,"Older adults may be at increased risk of urogenital infections, particularly women in the first month of treatment. 
+An increased risk of euglycemic diabetic ketoacidosis has also been seen in older adults.","Use with caution.
+Monitor patients for urogenital infections and ketoacidosis.",Moderate,Weak
