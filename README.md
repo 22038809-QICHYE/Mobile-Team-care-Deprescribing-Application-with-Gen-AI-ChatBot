@@ -69,3 +69,25 @@ To use the MultiPDF Chat App, follow these steps:
 
 5. Ask questions in natural language about the loaded PDFs using the chat interface.
 
+
+To use the Admin Web Page, follow these steps:
+
+1. Ensure that you have installed the required dependencies
+
+2. Before running `app.py`, ensure that `app.config['UPLOAD_FOLDER'] = 'C:/your/path'` is set correctly before 
+   carrying on.
+
+3. The application will launch in your default web browser, displaying a welcome interface.
+
+4. Click login on the top left of the screen or click any of the buttons to enter the login screen.
+
+5. Login with the username and password.
+
+6. When logged in you are able to view, add , edit, delete resources and users.
+
+7. When adding user, simply fill in the required blanks. For the `Make this user an admin` checkbox, by ticking it you 
+   will be adding an admin who is able to login on the ChatBot web page and the Admin web page. If it is not ticked, 
+   the user will not be allowed to access the Admin page even with the correct username and password.
+
+8. When adding resource, ensure that file is in PDF or CSV format then proceed to fill in the blanks.
+
