@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="jumbotron text-center">
+            <h1 class="display-3">{{ content }}</h1>
+            <p class="lead">Welcome to our platform! Make sure your file name is not the same as any existing file from our resource list, thank you!!</p>
+            <hr class="my-4">
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ url_for('view_post') }}" role="button">Explore Resources</a>
+                <a class="btn btn-danger btn-lg ml-3" href="{{ url_for('user') }}" role="button">View User Details</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
