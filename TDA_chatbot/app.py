@@ -144,7 +144,7 @@ def view_post():
                 if os.path.exists(file_path):
                     os.remove(file_path)
 
-                ChromaManager().delete_document(document_id=resource)
+                ChromaManager().delete_document_via_metadata(document_id=resource)
                 db.session.delete(resource)
                 db.session.commit()
                 flash("Resource deleted successfully!")
