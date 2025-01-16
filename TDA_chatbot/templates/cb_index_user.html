@@ -1,0 +1,9 @@
+{% extends "cb_base.html" %}
+
+{% block content %}
+<div class="container text-center">
+    <h1>Welcome, User</h1>
+    <button onclick="location.href='/chat'" class="btn btn-primary">Start Chatbot</button>
+    <button onclick="location.href='/logout'" class="btn btn-danger">Logout</button>
+</div>
+{% endblock %}
