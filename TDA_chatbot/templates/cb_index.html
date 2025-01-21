@@ -1,98 +1,26 @@
-
 {% extends "cb_base.html" %}
 
+{% block title %}
+Home Webpage
+{% endblock %}
+
 {% block content %}
-<style>
-body {
-    font-family: 'Montserrat', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: lightgray;
-}
-
-section {
-    display: grid;
-    place-items: center;
-    align-content: center;
-    min-height: 100vh;
-}
-
-.hidden {
-    opacity: 0;
-    filter: blur(5px);
-    transform: translateX(-100%);
-    transition: all 1s;
-
-}
-
- 
-/* Transition */
-html {
-    scroll-behavior: smooth;
-}
-
-p {
-    color: rgb(85, 85, 85)
-}
-
-* {
-    padding: 0;
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-}
-
-ul {
-    list-style: none;
-    background: #333;
-    text-align: center;
-}
-
-ul li {
-    display: inline-block;
-    position: relative;
-}
-
-ul li a {
-    display: block;
-    padding: 20px 25px;
-    color: #FFF;
-    text-decoration: none;
-    text-align: center;
-    font-size: 16px;
-}
-
-ul li ul.dropdown li {
-    display: block;
-    background: #333;
-    margin: 2px 0px;
-}
-
-ul li ul.dropdown {
-    width:auto;
-    background: #ffffff;
-    position: absolute;
-    z-index: 999;
-    display: none;
-}
-
-ul li a:hover {
-    background: #222;
-}
-
-ul li:hover ul.dropdown{
-    display: block;
-}
-
-</style>
-<div class="container text-center">
-    <!-- Navigation Bar -->
-    <nav>
-        <ul>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="#">Others</a></li>
-        </ul>
-    </nav>
-    <h1 style="color:rgb(0, 0, 0);">C300 Website</h1>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Introductory message -->
+            <h2 class="text-center mb-4">This is the Main Webpage!</h2>
+            <!-- Flash message section -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
 </div>
 {% endblock %}

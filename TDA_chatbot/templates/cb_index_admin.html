@@ -2,14 +2,13 @@
 
 {% block content %}
 <div class="container text-center">
-    <h1>Welcome, Admin</h1>
+    <div class="container mt-5">
+        <h2>Welcome, {{ username }}</h2>
+        <p>Start your chatbot session below or view past conversations.</p>
+        <a href="/chat" class="btn btn-success">Start Chatbot</a>
+        <button onclick="location.href='/create_admin'" class="btn btn-success">Add User</button>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
 </div>
-<nav class="container text-center">
-    <ul>
-            <button onclick="location.href='/chat'" class="btn btn-primary">Start Chatbot</button>
-            <button onclick="location.href='/logout'" class="btn btn-danger">Logout</button>
-            <button onclick="location.href='/create_admin'" class="btn btn-success">Add New Admin</button>
-    </ul>
-    
-</nav>
+
 {% endblock %}

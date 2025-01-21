@@ -2,8 +2,11 @@
 
 {% block content %}
 <div class="container text-center">
-    <h1>Welcome, User</h1>
-    <button onclick="location.href='/chat'" class="btn btn-primary">Start Chatbot</button>
-    <button onclick="location.href='/logout'" class="btn btn-danger">Logout</button>
+    <div class="container mt-5">
+        <h2>Welcome, {{ username }}</h2>
+        <p>Start your chatbot session below or view past conversations.</p>
+        <a href="/chat" class="btn btn-success">Start Chatbot</a>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
 </div>
 {% endblock %}
