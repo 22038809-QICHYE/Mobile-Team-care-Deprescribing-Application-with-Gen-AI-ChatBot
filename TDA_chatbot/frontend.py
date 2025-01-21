@@ -1,13 +1,14 @@
+import os
 import streamlit as st
-from chatbotapp import username, admin_id
 from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
-from inte5cz import generate, setupModel  # Import functions from inte3.py
+import pandas as pd
+from inte5cz import generate, setupModel
 
 # Database setup
-DATABASE_URL =  "sqlite:///app.sqlite3"
+DATABASE_URL = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'instance', 'app.sqlite3')}"
 Base = declarative_base()
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
@@ -24,7 +25,7 @@ if "messages" not in st.session_state:
 
 # Database models
 class Admin(Base):
-    __tablename__ = "admins"
+    __tablename__ = "admin"
     admin_id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, nullable=False)
@@ -36,9 +37,10 @@ class Admin(Base):
 class Session(Base):
     __tablename__ = "sessions"
     session_id = Column(Integer, primary_key=True, autoincrement=True)
-    admin_id = Column(Integer, ForeignKey("admins.admin_id"), nullable=False)
+    admin_id = Column(Integer, ForeignKey("admin.admin_id"), nullable=False)
     start_time = Column(DateTime, default=datetime.utcnow)
     end_time = Column(DateTime)
+    session_name = Column(String, default="Untitled Session")
     messages = relationship("Message", back_populates="session")
     admin = relationship("Admin", back_populates="sessions")
 
@@ -55,6 +57,24 @@ class Message(Base):
 
 Base.metadata.create_all(bind=engine)
 
+# Function to generate a default session name
+def generate_session_name(admin_username):
+    return f"Session-{admin_username}-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}"
+
+# Function to save messages to the database
+def save_message(role, content):
+    db_session = SessionLocal()  # Start a session with the database
+    try:
+        # Create a new message record
+        new_message = Message(
+            session_id=st.session_state["session_id"],  # Use the current session ID
+            role=role,  # Role (User or Admin)
+            content=content  # The actual message content
+        )
+        db_session.add(new_message)  # Add the message to the session
+        db_session.commit()  # Commit the changes to the database
+    finally:
+        db_session.close()  # Close the database session after saving the message
 
 
 # Check query parameters
@@ -72,24 +92,32 @@ if "admin_id" in query_params and "username" in query_params and "session_id" in
     db_session.close()
 
     if admin and session_instance:
-        print(f"Welcome, {admin.username}! Session ID: {session_id}")
         st.session_state["session_id"] = session_id
+
+        # Retrieve the messages for this session and load them into session state
+        db_session = SessionLocal()
+        messages = db_session.query(Message).filter_by(session_id=session_id).order_by(Message.timestamp.asc()).all()
+        
+        # Load messages into session state
+        st.session_state["messages"] = [
+            {"role": message.role, "content": message.content} for message in messages
+        ]
+        db_session.close()
+        
     else:
-        st.error("Invalid admin or session. Please log in.")
+        st.error("Invalid user or session. Please log in.")
         st.stop()
 else:
     st.error("Missing query parameters: admin_id, username, or session_id.")
     st.stop()
 
-
-st.title(f"Welcome, {username}! C300 AI Chat Bot")
+# Main content rendering
+st.title(f"Welcome, {username}! RAG Deprescribing Chatbot")
 
 # Ensure session_id is set and persistent
 db_session = SessionLocal()
 
-# Check if there is already a session_id in st.session_state
 if not st.session_state.get("session_id"):
-    # Fetch the latest session for the admin
     existing_session = (
         db_session.query(Session)
         .filter_by(admin_id=admin_id)
@@ -98,98 +126,57 @@ if not st.session_state.get("session_id"):
     )
 
     if existing_session:
-        # Use the latest session for the admin
         st.session_state["session_id"] = existing_session.session_id
     else:
-        # Create a new session if none exists
-        new_session = Session(admin_id=admin_id)
+        # Create a new session with a default session name
+        default_name = generate_session_name(username)
+        new_session = Session(admin_id=admin_id, session_name=default_name)
         db_session.add(new_session)
         db_session.commit()
         st.session_state["session_id"] = new_session.session_id
 
 db_session.close()
 
-
-
-
-# Load chat history only for the current session
-if not st.session_state["messages"]:
+# Display session name popover (Renaming functionality)
+with st.expander("Session Naming"):
     db_session = SessionLocal()
-    messages = (
-        db_session.query(Message)
-        .filter_by(session_id=st.session_state["session_id"])
-        .order_by(Message.timestamp.asc())
-        .all()
-    )
-    for msg in messages:
-        st.session_state["messages"].append({"role": msg.role, "content": msg.content})
+    current_session = db_session.query(Session).filter_by(session_id=st.session_state["session_id"]).first()
+
+    if current_session:
+        st.subheader(f"Current Session: {current_session.session_name}")
+        new_session_name = st.text_input("Update session name:", value=current_session.session_name)
+        
+        if st.button("Save Session Name"):
+            current_session.session_name = new_session_name
+            db_session.commit()
+            st.success("Session name updated!")
     db_session.close()
 
+# Display model selection (always open, no dropdown)
+if not st.session_state.get("model_name"):
+    st.write("Please choose a model:")
+    model_choice = st.radio("Select a model:", options=["GPT", "GEMINI"])
 
-# Save messages
-def save_message(role, content):
-    db_session = SessionLocal()
-    try:
-        new_message = Message(
-            session_id=st.session_state["session_id"], 
-            role=role, 
-            content=content
-        )
-        db_session.add(new_message)
-        db_session.commit()
-    finally:
-        db_session.close()
+    if st.button("Confirm Model Selection"):
+        st.session_state["model_name"] = model_choice.lower()
+        st.success(f"Model selected: {model_choice}")
 
-
-
-
-
+# Set up the model only after selection
+if st.session_state.get("model_name"):
+    model = setupModel(st.session_state["model_name"])
 
 # Display existing chat history
 for message in st.session_state["messages"]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Model selection
-if not st.session_state.get("model_name"):
-    st.write("Please choose a model:")
-    st.write("1. GPT")
-    st.write("2. GEMINI")
-    admin_input = st.text_input("Type '1' for GPT or '2' for GEMINI:")
-
-    if admin_input:
-        if admin_input.strip() == "1":
-            st.session_state["model_name"] = "gpt"
-        elif admin_input.strip() == "2":
-            st.session_state["model_name"] = "gemini"
-        else:
-            st.error("Invalid choice. Please type '1' or '2'.")
-        
-        if st.session_state["model_name"]:
-            # Add the model selection to chat history
-            model_selection_message = f"Model selected: {st.session_state['model_name']}"
-            st.session_state["messages"].append({
-                "role": "system",
-                "content": model_selection_message
-            })
-            st.chat_message("system").markdown(model_selection_message)
-
-# Set up the model only after selection
-if st.session_state.get("model_name"):
-    model = setupModel(st.session_state["model_name"])
-
-# Handle new input from admin
+# Handle new input from user
 if prompt := st.chat_input("Your message:"):
-    # Add admin input to chat history
-    st.session_state["messages"].append({"role": "admin", "content": prompt})
-    save_message("admin", prompt)
-    st.chat_message("admin").markdown(prompt)
+    st.session_state["messages"].append({"role": username, "content": prompt})
+    save_message(username, prompt)
+    st.chat_message(username).markdown(prompt)
 
-    # Validate and generate a response
-    response = generate(prompt, model , st.session_state["messages"])
-    
-    # Add the response to chat history
+    response = generate(prompt, model, st.session_state["messages"])
     st.session_state["messages"].append({"role": "assistant", "content": response})
     save_message("assistant", response)
     st.chat_message("assistant").markdown(response)
-
