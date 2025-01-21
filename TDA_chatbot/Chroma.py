@@ -173,7 +173,38 @@ class ChromaManager:
 
         print(f"Document with metadata ID '{metadata_id}' not found.")
 
-        
+    def delete_documents_by_metadata_source(self, source_value):
+        """
+        Delete all documents that match the specified metadata 'source'.
+
+        :param source_value: The value of the 'source' metadata to match for deletion.
+        """
+        if not self.collection:
+            raise ValueError("Collection is not initialized.")
+
+        # Fetch all documents in the collection
+        documents = self.collection.get()
+
+        # Check if documents exist
+        if not documents or not documents.get("documents"):
+            print("No documents found in the collection.")
+            return
+
+        # List to store IDs of documents to delete
+        ids_to_delete = []
+
+        # Search for documents with the specified metadata 'source'
+        for doc_id, doc_metadata in zip(documents["ids"], documents["metadatas"]):
+            if doc_metadata.get("source") == source_value:
+                ids_to_delete.append(doc_id)
+
+        # Delete the documents by their IDs
+        if ids_to_delete:
+            self.collection.delete(ids=ids_to_delete)
+            print(f"Deleted documents with source '{source_value}': {ids_to_delete}")
+        else:
+            print(f"No documents found with source '{source_value}'.")
+
 
 def test_script1():
         # Initialize ChromaManager
@@ -230,7 +261,13 @@ def test_script1():
         print(f"\nDeleting collection: '{new_collection_name}'...")
         manager.delete_collection(collection_name=new_collection_name)
         print(f"Collection '{new_collection_name}' deleted successfully.")
+       
         '''
+        # Test deleting a document via source
+        doc_id_to_delete = "C://VS_CODES//RAG//Upload\\Table 6.csv"
+        print(f"\nDeleting document with ID: '{doc_id_to_delete}'...")
+        manager.delete_documents_by_metadata_source(doc_id_to_delete)
+        
 
 def test_script2():
         # Initialize ChromaManager
@@ -287,6 +324,8 @@ def test_script2():
         manager.delete_collection(collection_name=new_collection_name)
         print(f"Collection '{new_collection_name}' deleted successfully.")
         """
+
+
 if __name__ == "__main__":
     try:
         test_script1()
