@@ -12,7 +12,7 @@ class Retriever:
         :param verbose: Enable verbose logging for debugging (default: False).
         """
         self.search_type = search_type
-        self.search_kwargs = search_kwargs or {'k': 10}  # Default to 10 documents
+        self.search_kwargs = search_kwargs or {'k': 50}  # Default to 50 documents
         self.chroma_client = ChromaManager().vectorstore_client
 
     def _get_retriever(self, search_type=None, search_kwargs=None):
@@ -112,8 +112,8 @@ class Retriever:
 
         table_data = []
         for i, doc in enumerate(results, start=1):
-            content_preview = doc.page_content[:100] + "..." if len(doc.page_content) > 100 else doc.page_content
-            metadata = doc.metadata
+            content_preview = doc.page_content[:50] + "..." if len(doc.page_content) > 100 else doc.page_content
+            metadata= doc.metadata
             table_data.append([i, content_preview, metadata])
 
         headers = ["#", "Content (Preview)", "Metadata"]
@@ -127,7 +127,7 @@ def test_script1():
     print("\n--- Testing Default Retrieval ---")
     default_results = retriever.retrieve(query)
     print(retriever.format_results(default_results))
-
+    '''
     # Test 2: MMR retrieval
     print("\n--- Testing MMR Retrieval ---")
     mmr_results = retriever.retrieve_mmr(query)
@@ -143,7 +143,7 @@ def test_script1():
     print("\n--- Testing Filtered Retrieval ---")
     filtered_results = retriever.retrieve_with_filter(query, filter_criteria)
     print(retriever.format_results(filtered_results))
-
+    '''
 
 
 if __name__ == "__main__":    
