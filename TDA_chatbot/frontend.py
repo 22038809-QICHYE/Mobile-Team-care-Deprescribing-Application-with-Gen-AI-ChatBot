@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 import pandas as pd
-from inte5cz import generate, setupModel
+from inte6cz import generate, setupModel, retieve_patient_info, validate, check_score, chosen_model, decision_model, get_info #corn
 
 # Database setup
 DATABASE_URL = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'instance', 'app.sqlite3')}"
@@ -22,7 +22,8 @@ if "session_id" not in st.session_state:
     st.session_state["session_id"] = None
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
-
+if "current_info" not in st.session_state:
+    st.session_state["current_info"] = ""
 # Database models
 class Admin(Base):
     __tablename__ = "admin"
@@ -176,7 +177,21 @@ if prompt := st.chat_input("Your message:"):
     save_message(username, prompt)
     st.chat_message(username).markdown(prompt)
 
-    response = generate(prompt, model, st.session_state["messages"])
-    st.session_state["messages"].append({"role": "assistant", "content": response})
-    save_message("assistant", response)
-    st.chat_message("assistant").markdown(response)
+   
+    # corn
+    st.session_state["current_info"] = retieve_patient_info(prompt, chosen_model, st.session_state["current_info"])
+    print("Current Info:", st.session_state["current_info"])
+    validation = validate(decision_model, st.session_state["current_info"])
+    print(validation)
+    if check_score(validation):
+        response = generate(st.session_state["current_info"], chosen_model)
+        st.chat_message("assistant").markdown(response)
+        print("Recommendation:", response)
+        st.session_state["messages"].append({"role": "assistant", "content": response})
+        save_message("assistant", response)
+    else:
+        response = get_info(st.session_state["current_info"], chosen_model)
+        st.chat_message("assistant").markdown(response)
+        print("Response:", response)
+        st.session_state["messages"].append({"role": "assistant", "content": response})
+        save_message("assistant", response)
