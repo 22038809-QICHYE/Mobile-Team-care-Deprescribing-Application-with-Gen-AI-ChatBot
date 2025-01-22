@@ -3,9 +3,9 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_community.cache import InMemoryCache
 from langchain_core.globals import set_llm_cache
-from RAG_V3_2 import RAGSystem #QC
+from RAG_V3_2 import RAGSystem  # QC
 
-#=== QC ===
+# === QC ===
 rag = RAGSystem()
 
 # Add cache to langchain
@@ -21,78 +21,43 @@ class LLMmodel:
 GPT4 = LLMmodel("gpt-4", "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")
 GEMINI = LLMmodel("gemini-1.5-flash", "AIzaSyBKseORSyKLbbmc9hoX-4N0LUr4ApWWgOA")
 
-
 def setupModel(modelname):
     if modelname == "gpt":
         model = ChatOpenAI(model="gpt-4", openai_api_key=GPT4.api_key)
-    
     elif modelname == "gemini":
         model = ChatGoogleGenerativeAI(model=GEMINI.model, google_api_key=GEMINI.api_key)
-
     return model
-
-
 
 # Prompt Engineering
 prompt = PromptTemplate.from_template("""
-    System: You are a decision-support AI tasked with safely deprescribing medications for patients. 
-    Your tone should always be kind, empathetic, and supportive, ensuring the user feels heard and cared for.
-    Start responses with warm acknowledgments like "Thank you for sharing," or "I understand this can be a complex decision."
-    If no relevant information is found in the documentation, provide an accurate response based on general knowledge and kindly clarify this, using phrases such as:
-    "Based on general best practices..."
-    or "Here is what I can suggest from widely accepted guidance..."
-    Follow best practices in medication management and always prioritize patient safety. 
-    If the decision to deprescribe involves significant risks or requires specialized input, gently recommend involving a healthcare professional. Use reassuring language, such as:
-    "It is always a good idea to consult with your healthcare provider to ensure the best outcome for your health."
-    or "Together with your healthcare professional, you can explore the safest and most effective options."
-    If deprescribing is recommended, provide alternative strategies to manage their condition and express encouragement, e.g.,
-    "There are several options we can explore together to support your health."
-    or "Here are a few strategies that may help you feel better while reducing or stopping this medication."
+    System: You are a decision-support AI tasked with safely deprescribing medications for patients.
+    If no relevant information is found in the documentation, provide an accurate response based on general knowledge and clarify that it is based on general knowledge.
+    Follow best practices in medication management and always prioritize patient safety.
+    If the decision to deprescribe involves significant risks or requires specialized input,
+    recommend involving a healthcare professional and highlight key discussion points.
+    If deprescribing is recommended, provide alternative strategies to manage their condition.
     Please be kind and friendly when responding to users.
 
-    If there are topics that are not relevant to medication management, kindly reject their request and kindly clarify that you can only answer questions related to medication management.
     Chat History: {chat_history}
 
     User: {input}
+
+    Retrieved Context: {retrieved_context}
 """)
 
 validation_prompt = PromptTemplate.from_template("""
-    System: You are a decision-support AI tasked with safely deprescribing medications for patients. 
-    Your tone should always be kind, empathetic, and supportive, ensuring the user feels heard and cared for.
-    Start responses with warm acknowledgments like "Thank you for sharing," or "I understand this can be a complex decision."
+    System: You are a patient information validator.
     Check that patient information consists of the following fields:
-    Age, Gender, Medications, Medical Conditons.
+    Age, Gender, Medications, Medical Conditions.
     At least one medication and one medical condition.
     If any of these required fields are not stated, ask the patient again for the required fields.
-    
+    If all patient information is available, reply true with no explanation.
+    No need to ask for other questions, just take in the four required fields.
 
     Chat History: {chat_history}
 
     Patient Information: {input}
 """)
-def extract_required_fields(input_text):
-    """
-    Extract Age, Gender, Medications, and Conditions from the user input.
-    """
-    # Placeholder for actual extraction logic (use regex or NLP for real-world scenarios)
-    extracted_fields = {
-        "Age": None,
-        "Gender": None,
-        "Medications": None,
-        "Conditions": None
-    }
-    # Parsing
-    for line in input_text.split("\n"):
-        if "age" in line.lower():
-            extracted_fields["Age"] = line.split(":")[1].strip()
-        elif "gender" in line.lower():
-            extracted_fields["Gender"] = line.split(":")[1].strip()
-        elif "medications" in line.lower():
-            extracted_fields["Medications"] = line.split(":")[1].strip()
-        elif "conditions" in line.lower():
-            extracted_fields["Conditions"] = line.split(":")[1].strip()
-
-    return extracted_fields
 
 def generate(query, model, chat_history):
     # Join chat history into a single string
@@ -103,21 +68,20 @@ def generate(query, model, chat_history):
         input=query,
         chat_history=chat_string
     )
+    print("Validation Prompt Sent to Model:\n", validation_prompt_text)
     validation_response = model.invoke(validation_prompt_text)
+    print("Validation Response:\n", validation_response.content)
 
     if validation_response.content.lower().strip() != "true":
         # Validation failed, return the validation error message
         return validation_response.content
-    
-    # Step 45: Extract required fields
-    extracted_fields = extract_required_fields(query)
 
-    # Format extracted fields for retrieval
-    formatted_query = f"(Age: {extracted_fields['Age']}, Gender: {extracted_fields['Gender']}, Medications: {extracted_fields['Medications']}, Conditions: {extracted_fields['Conditions']})"
+    # Extract only patient information from the query for retrieval
+    patient_info = query  # This assumes `query` contains the patient data.
 
-    # Step 3: Perform retrieval using formatted query
-    retrieved_context = rag.process_query(formatted_query, "gpt-4")
-    print(retrieved_context)
+    # Step 2: Perform retrieval with patient information
+    retrieved_context = rag.process_query(patient_info, "gpt-4")
+    print("Retrieved Context:\n", retrieved_context)
 
     # Step 3: Generate a response using retrieved context
     response_prompt_text = prompt.format(
@@ -125,7 +89,9 @@ def generate(query, model, chat_history):
         chat_history=chat_string,
         retrieved_context=retrieved_context
     )
+    print("Response Prompt Sent to Model:\n", response_prompt_text)
     response = model.invoke(response_prompt_text)
+    print("Response from Model:\n", response.content)
 
     # Append the generated response to chat history
     chat_history.append({
