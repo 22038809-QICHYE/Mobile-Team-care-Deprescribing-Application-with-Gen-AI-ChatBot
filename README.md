@@ -81,7 +81,7 @@ To use the Admin Web Page, follow these steps:
 
 4. The application will launch in your default web browser, displaying a welcome interface.
 
-5. Click login on the top left of the screen or click any of the buttons to enter the login screen.
+5. Click login on the top left of the screen or click any of the buttons to enter the login screen. Username: admin, Password: admin
 
 6. Login with the username and password.
 
