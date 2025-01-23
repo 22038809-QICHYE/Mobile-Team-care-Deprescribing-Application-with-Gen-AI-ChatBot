@@ -50,6 +50,7 @@ To install the TDA Chatbot, please follow these steps:
    CHROMA_PATH = "C:\VS_CODES\RAG\Collections"
    COLLECTION_NAME="Unstructured_data"
    REDIS_URL="redis://default:ytXIaoFI74f4TT8LfSBlfBuYCNFRjv3B@redis-12846.c252.ap-southeast-1-1.ec2.redns.redis-cloud.com:12846"
+   OPENAI_API_KEY="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"
    ```
 
 # Usage
