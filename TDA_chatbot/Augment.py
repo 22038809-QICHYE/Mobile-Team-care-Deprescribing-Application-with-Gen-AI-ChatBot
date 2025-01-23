@@ -27,7 +27,8 @@ class Augmentation:
         )
 
         if not combined_context:
-            raise ValueError("No valid content found in the provided documents.")
+            return {"Query": user_query.strip(), "Content": "No relevant document content available."}
+
 
         # Create the augmented query data
         augmented_query_data = {
@@ -53,29 +54,29 @@ def test_script1():
     reranker = CrossEncoderReRanker()
     augmentor = Augmentation()
 
-    user_query = "What is an example of document retrieval?"
-
-    print("Retrieving documents...")
-    retrieved_documents = retriever.retrieve_similarity_score_threshold(user_query)
-
-    if not retrieved_documents:
-        print("No documents retrieved.")
-        return "No relevant documents found."
-
-    print("Re-ranking documents...")
-    reranked_documents = reranker.re_rank_documents(user_query, retrieved_documents)
-
-    if not reranked_documents:
-        print("No documents were re-ranked successfully.")
-        return "No relevant documents found."
-
+    user_query = "Age: 78, Gender: female, Medications: Ciprofloxacin (5mg diphenoxylate & 0.05mg atropine QDS), Tolterodine IR (2mg BD), Brinzolamide (1 drop TDS), Conditions: Severe diarrhoea, dementia, overactive bladder syndrome, Chronic glaucoma"
     try:
+        print("Retrieving documents...")
+        retrieved_documents = retriever.retrieve_multi_query(user_query)
+
+        if not retrieved_documents:
+            print("No documents retrieved.")
+            return "No relevant documents found."
+
+        print("Re-ranking documents...")
+        reranked_documents = reranker.re_rank_documents(user_query, retrieved_documents)
+
+        if not reranked_documents:
+            print("No documents were re-ranked successfully.")
+            return "No relevant documents found."
+
+        
         print("Augmenting query with all ranked documents...")
         augmented_query_data = augmentor.augment_query_with_document(user_query, reranked_documents)
-        formatted_query = augmentor.format_augmented_query(augmented_query_data)
+        #formatted_query = augmentor.format_augmented_query(augmented_query_data)
 
         print("\n=== Augmented Query ===")
-        print(formatted_query)
+        print(augmented_query_data)
     except ValueError as ve:
         print(f"ValueError occurred: {ve}")
     except Exception as e:
