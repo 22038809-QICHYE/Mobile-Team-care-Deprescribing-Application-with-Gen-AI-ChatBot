@@ -1,6 +1,24 @@
 from Chroma import ChromaManager
 from tabulate import tabulate
+# MultiQuery Retrieval
+from langchain.retrievers.multi_query import MultiQueryRetriever
+from langchain_openai import ChatOpenAI
+from langchain_core.output_parsers import BaseOutputParser
+from langchain_core.prompts import PromptTemplate
+from typing import List
+# Set logging for the queries
+import logging
 
+logging.basicConfig()
+logging.getLogger("langchain.retrievers.multi_query").setLevel(logging.INFO)
+
+# Output parser will split the LLM result into a list of queries
+class LineListOutputParser(BaseOutputParser[List[str]]):
+    """Output parser for a list of lines."""
+
+    def parse(self, text: str) -> List[str]:
+        lines = text.strip().split("\n")
+        return list(filter(None, lines))  # Remove empty lines
 
 class Retriever:
     def __init__(self, search_type="similarity", search_kwargs=None):
@@ -12,8 +30,9 @@ class Retriever:
         :param verbose: Enable verbose logging for debugging (default: False).
         """
         self.search_type = search_type
-        self.search_kwargs = search_kwargs or {'k': 50}  # Default to 50 documents
+        self.search_kwargs = search_kwargs or {'k': 20}  # Default to 20 documents
         self.chroma_client = ChromaManager().vectorstore_client
+        
 
     def _get_retriever(self, search_type=None, search_kwargs=None):
         """
@@ -50,7 +69,7 @@ class Retriever:
         """
         retriever = self.chroma_client.as_retriever(
             search_type="mmr", 
-            search_kwargs={"fetch_k": 10}  # Fetch up to 10 documents
+            search_kwargs={"k": 200, "fetch_k": 100}  # Fetch up to 10 documents
         )
         try:
             results = retriever.invoke(query)
@@ -99,6 +118,54 @@ class Retriever:
         results = retriever.invoke(query)
         return results
     
+            
+    #=== MultiQuery Retrieval ===
+    def retrieve_multi_query(self, query, k=20):
+        """
+        Perform retrieval using MultiQueryRetriever and return both documents and generated queries.
+        
+        :param query: The query for which to retrieve documents.
+        :param k: The number of documents to retrieve for each generated query.
+        :return: A tuple containing a list of retrieved documents and a list of generated queries.
+        """
+        llm = ChatOpenAI(temperature=0)  # Initialize the LLM for query generation
+        
+        # Create a custom prompt to generate specific questions for each medication and condition
+        prompt = PromptTemplate(
+            input_variables=["question"],
+            template="""You are an AI language model assistant. Your task is to generate specific 
+            questions based on the given user question. For each medication and condition mentioned, 
+            create a question that asks for recommendations. The format should be: 
+            'What are the recommendations for [medication/condition]?' 
+            Ensure that you cover all medications and conditions mentioned in the original question. 
+            Provide these questions separated by newlines.
+            Original question: {question}"""
+        )
+        
+        # Set the prompt in the retriever
+        llm_chain = prompt | llm | LineListOutputParser()
+
+        try:
+            # Initialize MultiQueryRetriever
+            retriever = MultiQueryRetriever(
+                retriever=self.chroma_client.as_retriever(), llm_chain=llm_chain
+            )
+            # Invoke the retriever to get results
+            results = retriever.invoke(query)
+            
+            # Get the generated queries
+            generated_queries = llm_chain.invoke(query)
+            logging.info(f"Generated queries:\n{generated_queries}")
+            
+            print(f"Retrieved {len(results)} documents using MultiQueryRetriever.")
+            
+            # Limit the number of retrieved documents to k
+            limited_results = results[:k]  # Only take the top k documents
+            return limited_results, generated_queries  # Return both documents and generated queries
+        except Exception as e:
+            print(f"Error during MultiQuery retrieval: {e}")
+            return [], []
+
     #=== Result formating ===
     def format_results(self, results):
         """
@@ -112,7 +179,7 @@ class Retriever:
 
         table_data = []
         for i, doc in enumerate(results, start=1):
-            content_preview = doc.page_content[:50] + "..." if len(doc.page_content) > 100 else doc.page_content
+            content_preview = doc.page_content[:60] + "..." if len(doc.page_content) > 100 else doc.page_content
             metadata= doc.metadata
             table_data.append([i, content_preview, metadata])
 
@@ -121,13 +188,14 @@ class Retriever:
     
 def test_script1():
     retriever = Retriever()
-    query = "What is an example of document retrieval?"
-
+    query = "Age: 78, Gender: female, Medications: Ciprofloxacin (5mg diphenoxylate & 0.05mg atropine QDS), Tolterodine IR (2mg BD), Brinzolamide (1 drop TDS), Conditions: Severe diarrhoea, dementia, overactive bladder syndrome, Chronic glaucoma"
+    
+    '''
     # Test 1: Default retrieval
     print("\n--- Testing Default Retrieval ---")
     default_results = retriever.retrieve(query)
     print(retriever.format_results(default_results))
-    '''
+    
     # Test 2: MMR retrieval
     print("\n--- Testing MMR Retrieval ---")
     mmr_results = retriever.retrieve_mmr(query)
@@ -144,6 +212,16 @@ def test_script1():
     filtered_results = retriever.retrieve_with_filter(query, filter_criteria)
     print(retriever.format_results(filtered_results))
     '''
+
+    # Test 5: MultiQuery retrieval
+    print("\n--- Testing MultiQuery Retrieval ---")
+    retrieved_docs, generated_queries = retriever.retrieve_multi_query(query)
+    print(f"\nRetrieved {len(retrieved_docs)} documents:")
+    print(retriever.format_results(retrieved_docs))
+    # Display the generated queries
+    print("\nGenerated Queries:")
+    for query in generated_queries:
+        print(query)
 
 
 if __name__ == "__main__":    
