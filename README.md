@@ -74,8 +74,7 @@ To use the Admin Web Page, follow these steps:
 
 1. Ensure that you have installed the required dependencies
 
-2. Before running `app.py`, ensure that `app.config['UPLOAD_FOLDER'] = 'C:/your/path'` is set correctly before 
-   carrying on.
+2. Before running `app.py`, open the 'app.py' code with Visual Studio Code at line 8-16, ensure that `app.config['UPLOAD_FOLDER'] = 'C:/your/path'` is set to where you want the files to get uploaded to.
 
 3. The application will launch in your default web browser, displaying a welcome interface.
 
