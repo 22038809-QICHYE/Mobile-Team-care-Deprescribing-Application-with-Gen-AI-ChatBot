@@ -1,0 +1,35 @@
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between messages */
+}
+.chat-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px; /* Space between profile picture and bubble */
+    margin-bottom: 15px;
+}
+.chat-row.row-reverse {
+    flex-direction: row-reverse;
+}
+.chat-bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.human-bubble {
+    background-color: #272525;
+    color: #E1D9D1;
+    align-self: flex-end;
+}
+.ai-bubble {
+    background-color: #272525;
+    color: #E1D9D1;
+}
+.chat-icon {
+    width: 40px; /* Adjust size as needed */
+    height: 40px;
+    border-radius: 50%;
+}
