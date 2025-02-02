@@ -6,6 +6,16 @@ from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 from inte6cz import generate, setupModel, retieve_patient_info, validate, check_score, chosen_model, decision_model, get_info
 
+# Hide Hamburger Menu and Streamlit Header
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 # Database setup
 DATABASE_URL = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'instance', 'app.sqlite3')}"
 Base = declarative_base()
@@ -23,6 +33,10 @@ if "messages" not in st.session_state:
     st.session_state["messages"] = []
 if "current_info" not in st.session_state:
     st.session_state["current_info"] = ""
+if "user_id" not in st.session_state:
+    st.session_state["user_id"] = None
+if "is_admin" not in st.session_state:
+    st.session_state["is_admin"] = False
 
 # Database models
 class Admin(Base):
@@ -89,6 +103,11 @@ load_css()
 # Check query parameters
 query_params = st.query_params
 
+if "read_only" in query_params:
+    st.session_state["read_only"] = query_params["read_only"].lower() == "true"
+else:
+    st.session_state["read_only"] = False
+
 if "admin_id" in query_params and "username" in query_params and "session_id" in query_params:
     admin_id = int(query_params["admin_id"])
     username = query_params["username"]
@@ -96,60 +115,67 @@ if "admin_id" in query_params and "username" in query_params and "session_id" in
 
     db_session = SessionLocal()
     admin = db_session.query(Admin).filter_by(admin_id=admin_id, username=username).first()
-    session_instance = db_session.query(Session).filter_by(session_id=session_id, admin_id=admin_id).first()
+    session_instance = db_session.query(Session).filter_by(session_id=session_id).first()
     db_session.close()
 
     if admin and session_instance:
         st.session_state["session_id"] = session_id
-
+        st.session_state["read_only"] = admin.admin_id != session_instance.admin_id
+        
         db_session = SessionLocal()
         messages = db_session.query(Message).filter_by(session_id=session_id).order_by(Message.timestamp.asc()).all()
-
         st.session_state["messages"] = [
             {"role": message.role, "content": message.content} for message in messages
         ]
         db_session.close()
     else:
-        st.error("Invalid user or session. Please log in.")
+        st.error("Invalid session. Please check the session ID.")
         st.stop()
 else:
     st.error("Missing query parameters: admin_id, username, or session_id.")
     st.stop()
 
-# Sidebar for session naming and model selection
-st.sidebar.title("Settings")
 
-# Session naming
-db_session = SessionLocal()
-current_session = db_session.query(Session).filter_by(session_id=st.session_state["session_id"]).first()
+# Sidebar settings
+if not st.session_state["read_only"]:
+    st.sidebar.title("Settings")
 
-if current_session:
-    st.sidebar.subheader("Session Naming")
-    new_session_name = st.sidebar.text_input("Update session name:", value=current_session.session_name)
-    if st.sidebar.button("Save Session Name"):
-        current_session.session_name = new_session_name
-        db_session.commit()
-        st.sidebar.success("Session name updated!")
+    if st.session_state["session_id"]:
+        db_session = SessionLocal()
+        current_session = db_session.query(Session).filter_by(session_id=st.session_state["session_id"]).first()
+        db_session.close()
+        
+        if current_session:
+            st.sidebar.subheader("Session Naming")
+            new_session_name = st.sidebar.text_input("Update session name:", value=current_session.session_name)
+            if st.sidebar.button("Save Session Name"):
+                db_session = SessionLocal()
+                current_session = db_session.query(Session).filter_by(session_id=st.session_state["session_id"]).first()
 
-db_session.close()
+                if current_session:
+                    current_session.session_name = new_session_name
+                    db_session.commit()
+                    st.session_state["session_name"] = new_session_name  # Update session state
+                    st.sidebar.success("Session name updated!")
+    
+                db_session.close()
 
-# Model selection
-st.sidebar.subheader("Model Selection")
-model_choice = st.sidebar.radio("Select a model:", options=["GPT", "GEMINI"], index=0)
-if st.sidebar.button("Confirm Model Selection"):
-    st.session_state["model_name"] = model_choice.lower()
-    st.sidebar.success(f"Model selected: {model_choice}")
 
-# Set up the model only after selection
-if st.session_state.get("model_name"):
-    model = setupModel(st.session_state["model_name"])
+    st.sidebar.subheader("Model Selection")
+    model_choice = st.sidebar.radio("Select a model:", options=["GPT", "GEMINI"], index=0)
+    if st.sidebar.button("Confirm Model Selection"):
+        st.session_state["model_name"] = model_choice.lower()
+        st.sidebar.success(f"Model selected: {model_choice}")
+
+    if st.session_state.get("model_name"):
+        model = setupModel(st.session_state["model_name"])
+
 
 # Main content rendering
 st.title(f"Welcome, {username}!")
 
 # Display existing chat history
 for message in st.session_state["messages"]:
-    # For human user, display the username, otherwise show "bot" for the assistant
     role = "row-reverse" if message["role"] != "assistant" else ""
     bubble_class = "human-bubble" if message["role"] != "assistant" else "ai-bubble"
     icon_text = st.session_state.get("username", username) if message["role"] != "assistant" else "Bot"
@@ -164,48 +190,56 @@ for message in st.session_state["messages"]:
         unsafe_allow_html=True,
     )
 
-# Handle new input from user
-if prompt := st.chat_input("Your message:"):
-    st.session_state["messages"].append({"role": username, "content": prompt})
-    save_message(username, prompt)
+if not st.session_state["read_only"]:
+    if prompt := st.chat_input("Your message:"):
+        st.session_state["messages"].append({"role": username, "content": prompt})
+        save_message(username, prompt)
+        
+        st.markdown(
+            f"""
+            <div class="chat-row row-reverse">
+                <div class="chat-icon">{st.session_state.get("username", username)}</div>
+                <div class="chat-bubble human-bubble">{prompt}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        # Corn
+        st.session_state["current_info"] = retieve_patient_info(prompt, chosen_model, st.session_state["current_info"])
+        print("Current Info:", st.session_state["current_info"])  # Debugging: Log current info
 
-    # Formatting the user message the same way as the previous messages
-    st.markdown(
-        f"""
-        <div class="chat-row row-reverse">
-            <div class="chat-icon">{st.session_state.get("username", username)}</div>
-            <div class="chat-bubble human-bubble">{prompt}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        validation = validate(decision_model, st.session_state["current_info"])
+        print("Validation Result:", validation)  # Debugging: Log validation result
 
-    # Corn
-    st.session_state["current_info"] = retieve_patient_info(prompt, chosen_model, st.session_state["current_info"])
-    print("Current Info:", st.session_state["current_info"])  # Debugging: Log current info
+        if check_score(validation):
+            response = generate(st.session_state["current_info"], chosen_model)
+            print("Recommendation:", response)  # Debugging: Log AI recommendation
+        else:
+            response = get_info(st.session_state["current_info"], chosen_model)
+            print("Response:", response)  # Debugging: Log AI response
 
-    validation = validate(decision_model, st.session_state["current_info"])
-    print(validation)  # Debugging: Log validation result
+        st.markdown(
+            f"""
+            <div class="chat-row">
+                <div class="chat-icon">Bot</div>
+                <div class="chat-bubble ai-bubble">{response}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        # Feedback on AI response
+        sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
+        selected = st.feedback("thumbs")
 
-    if check_score(validation):
-        response = generate(st.session_state["current_info"], chosen_model)
-        print("Recommendation:", response)  # Debugging: Log AI recommendation
-    else:
-        response = get_info(st.session_state["current_info"], chosen_model)
-        print("Response:", response)  # Debugging: Log AI response
+        if selected is not None:
+            feedback_text = sentiment_mapping[selected]
+            st.markdown(f"You selected: {feedback_text}")
+            print(f"User Feedback: {feedback_text}")  # Prints feedback to the terminal
 
-    # Formatting the assistant response in the same style
-    st.markdown(
-        f"""
-        <div class="chat-row">
-            <div class="chat-icon">Bot</div>
-            <div class="chat-bubble ai-bubble">{response}</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
 
-    # Save the assistant's response and update session state
-    st.session_state["messages"].append({"role": "assistant", "content": response})
-    save_message("assistant", response)
-
+        st.session_state["messages"].append({"role": "assistant", "content": response})
+        save_message("assistant", response)
+else:
+    st.warning("Read-only mode: You can view chat history but cannot send messages.")
