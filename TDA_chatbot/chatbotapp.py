@@ -179,9 +179,7 @@ def cb_admin_view_history():
 
     # Apply search filter
     if search_query:
-        query = query.filter(
-            Admin.username.ilike(f"%{search_query}%")  # Search by username
-        )
+        query = query.filter(Admin.username.ilike(f"%{search_query}%"))  # Search by username
 
     # Sort alphabetically by admin username
     query = query.order_by(Admin.username.asc())
@@ -203,7 +201,9 @@ def cb_admin_view_history():
         search_query=search_query,
         page=page,
         total_pages=(total_sessions + per_page - 1) // per_page,
+        current_admin_id=admin.admin_id,  # Pass the logged-in admin's ID to template
     )
+
 
 
 
@@ -228,52 +228,104 @@ def view_history():
 
     # Query only the user's sessions
     history = db_session.query(Session).filter_by(admin_id=admin_id).all()
+    
+    # Explicitly pass session IDs for deletion handling
+    session_data = [
+        {
+            "session_id": session.session_id,
+            "session_name": session.session_name,
+            "start_time": session.start_time.strftime('%Y-%m-%d'),
+        }
+        for session in history
+    ]
+
     db_session.close()
 
     return render_template(
         "cb_view_history.html",
         username=admin.username,
-        history=history,
+        history=session_data,  # Updated to a structured list
     )
+
+
+@chatbotapp.route("/delete_session/<int:session_id>", methods=["POST"])
+def delete_session(session_id):
+    if "admin_id" not in session:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for("view_history"))
+
+    admin_id = session["admin_id"]
+    db_session = SessionLocal()
+    session_to_delete = db_session.query(Session).filter_by(session_id=session_id, admin_id=admin_id).first()
+
+    if not session_to_delete:
+        db_session.close()
+        flash("Session not found or unauthorized.", "danger")
+        return redirect(url_for("view_history"))
+
+    # Delete related messages first (to maintain referential integrity)
+    db_session.query(Message).filter_by(session_id=session_id).delete()
+
+    # Delete the session itself
+    db_session.delete(session_to_delete)
+    db_session.commit()
+    db_session.close()
+
+    flash("Session deleted successfully.", "success")
+    return redirect(url_for("view_history"))
+
+
+
 
 @chatbotapp.route("/chat")
 def chat():
     if "admin_id" not in session or "username" not in session:
-        flash("You must be logged in as a user or admin to view chat history.", "warning")
+        flash("You must be logged in to access chat.", "warning")
         return redirect(url_for("login"))
+
     admin_id = session.get("admin_id")
     username = session.get("username")
     session_id = request.args.get("session_id")
     db_session = SessionLocal()
+    admin = db_session.query(Admin).filter_by(admin_id=admin_id).first()
+
+    if not admin:
+        db_session.close()
+        flash("User not found. Please log in again.", "danger")
+        return redirect(url_for("login"))
+
     if session_id:
-        # Logic to continue the session
-        existing_session = db_session.query(Session).filter_by(session_id=session_id, admin_id=admin_id).first()
+        existing_session = db_session.query(Session).filter_by(session_id=session_id).first()
         if not existing_session:
             db_session.close()
-            flash("Invalid session ID or you do not have access to this session.")
+            flash("Session not found.", "danger")
             return redirect(url_for("success"))
-        streamlit_url = f"http://localhost:8501/?admin_id={admin_id}&username={username}&session_id={session_id}"
+
+        # Admins can view all sessions but cannot modify those they don’t own
+        is_read_only = admin.is_admin and existing_session.admin_id != admin_id
+        streamlit_url = f"http://localhost:8501/?admin_id={admin_id}&username={username}&session_id={session_id}&read_only={is_read_only}"
     else:
-        # Logic to create a new session
+        # Allow admins to create new sessions
         new_session = Session(admin_id=admin_id)
         db_session.add(new_session)
         db_session.commit()
         session_id = new_session.session_id
-        streamlit_url = f"http://localhost:8501/?admin_id={admin_id}&username={username}&session_id={session_id}"
+        streamlit_url = f"http://localhost:8501/?admin_id={admin_id}&username={username}&session_id={session_id}&read_only=False"
+
     db_session.close()
+
     # Start Streamlit on port 8501
     streamlit_path = os.path.join(os.getcwd(), "frontend.py")
     subprocess.Popen(
         [
-            "python",
-            "-m", "streamlit", "run", streamlit_path,
-            "--server.port", "8501",
-            "--server.headless", "true"
+            "python", "-m", "streamlit", "run", streamlit_path,
+            "--server.port", "8501", "--server.headless", "true"
         ]
     )
-    # Automatically open the URL in the default web browser
+
     webbrowser.open_new(streamlit_url)
     return redirect(url_for("success"))
+
 
 
 
@@ -398,4 +450,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    chatbotapp.run(debug=True)
+    chatbotapp.run(debug=True, port=5000)
