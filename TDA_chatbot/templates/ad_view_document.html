@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container my-4">
+        <h1 class="display-4 text-center mb-4">Viewing: {{ filename }}</h1>
+
+        {% if documents %}
+            <div class="card">
+                <div class="card-body">
+                    <!-- Display document text with numbers -->
+                    <ul class="list-unstyled">
+                        {% for doc in documents %}
+                            <li>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-2">Document {{ loop.index }}</h5>
+                                    <small class="text-muted">{{ doc.metadata.get('source', 'Unknown Source') }}</small>
+                                </div>
+                                <p>{{ doc.text }}</p>
+                                <hr>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center">No content available for this file.</p>
+        {% endif %}
+    </div>
+{% endblock %}
