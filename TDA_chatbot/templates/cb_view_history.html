@@ -32,16 +32,19 @@
             <tr>
                 <th>Session Name</th>
                 <th>Date Created</th>
-                <th>Action</th>
+                <th class="text-center">Action</th>
             </tr>
         </thead>
         <tbody>
             {% for session in history %}
             <tr>
                 <td>{{ session.session_name }}</td>
-                <td>{{ session.start_time.strftime('%Y-%m-%d') }}</td>
-                <td>
+                <td>{{ session.start_time }}</td>
+                <td class="text-center">
                     <a href="/chat?session_id={{ session.session_id }}" class="btn btn-primary">Continue</a>
+                    <form action="/delete_session/{{ session.session_id }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this session?');">Delete</button>
+                    </form>
                 </td>
             </tr>
             {% else %}
@@ -50,6 +53,6 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table>    
 </div>
 {% endblock %}
