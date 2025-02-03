@@ -2,9 +2,7 @@
 from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from Retrieval import Retriever
 from tabulate import tabulate
-# Traditional Scoring Techniques
-from rank_bm25 import BM25Okapi
-from Chroma import ChromaManager
+
 
 
 # Neural Rerankers
@@ -298,6 +296,8 @@ class BM25ReRanker:
         :param chroma_manager: An instance of ChromaManager.
         :param collection_name: Optional, name of the collection to use (defaults to active collection).
         """
+        from rank_bm25 import BM25Okapi
+        from Chroma import ChromaManager
         # Use the specified collection or default to the active collection
         self.chroma_manager = ChromaManager()
 
