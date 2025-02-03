@@ -6,6 +6,7 @@ class Augmentation:
     def __init__(self):
         """Initializes the Query Augmentor."""
         pass
+    
 
     def augment_query_with_document(self, user_query, documents):
         """
@@ -18,8 +19,8 @@ class Augmentation:
         if not user_query.strip():
             raise ValueError("User query is empty. Please provide a valid query.")
 
-        if not documents or not isinstance(documents, list):
-            raise ValueError("Invalid documents. Ensure it is a list of documents.")
+        #if not documents or not isinstance(documents, list):
+        #    raise ValueError("Invalid documents. Ensure it is a list of documents.")
 
         # Extract and combine content from all documents
         combined_context = "\n\n".join(
@@ -49,38 +50,48 @@ class Augmentation:
         return tabulate(table_data, headers=["Field", "Content"], tablefmt="grid")
 
 
+#=== Testing ===
 def test_script1():
     retriever = Retriever()
     reranker = CrossEncoderReRanker()
     augmentor = Augmentation()
 
     user_query = "Age: 78, Gender: female, Medications: Ciprofloxacin (5mg diphenoxylate & 0.05mg atropine QDS), Tolterodine IR (2mg BD), Brinzolamide (1 drop TDS), Conditions: Severe diarrhoea, dementia, overactive bladder syndrome, Chronic glaucoma"
+    
     try:
-        print("Retrieving documents...")
-        retrieved_documents = retriever.retrieve_multi_query(user_query)
+        # Retrieve documents and generated queries using the retriever
+        print("\n--- Retrieving Documents ---")
+        retrieved_docs, generated_queries = retriever.retrieve_multi_query(user_query)
+        if not retrieved_docs:
+            print("No documents retrieved. Cannot proceed with re-ranking.")
+            return
 
-        if not retrieved_documents:
-            print("No documents retrieved.")
-            return "No relevant documents found."
+        # Display the retrieved documents
+        print(f"\nRetrieved {len(retrieved_docs)} documents:")
+        print(retriever.format_results(retrieved_docs))
 
-        print("Re-ranking documents...")
-        reranked_documents = reranker.re_rank_documents(user_query, retrieved_documents)
+        # Display the generated queries
+        print("\nGenerated Queries:")
+        for GEN_query in generated_queries:
+            print(GEN_query)
 
-        if not reranked_documents:
-            print("No documents were re-ranked successfully.")
-            return "No relevant documents found."
+        # Re-rank the retrieved documents across all queries
+        print("\n--- Re-ranking Documents Across Queries ---")
+        reranked_documents = reranker.re_rank_documents_across_queries(generated_queries, retrieved_docs)
 
-        
-        print("Augmenting query with all ranked documents...")
+        # Display the re-ranked results
+        print("\nRe-ranked Documents Across Queries:")
+        print(reranker.format_results_multi_query(reranked_documents))
+
+        # Augment query with top document
         augmented_query_data = augmentor.augment_query_with_document(user_query, reranked_documents)
-        #formatted_query = augmentor.format_augmented_query(augmented_query_data)
-
-        print("\n=== Augmented Query ===")
         print(augmented_query_data)
     except ValueError as ve:
         print(f"ValueError occurred: {ve}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
+
 
 
 if __name__ == "__main__":
