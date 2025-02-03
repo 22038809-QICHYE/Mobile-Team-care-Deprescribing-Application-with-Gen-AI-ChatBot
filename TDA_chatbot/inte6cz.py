@@ -68,7 +68,7 @@ def generate(current_info, model):
     Patient Information: {current_info}
     Documentations: {retrieved_context}
     """)
-    retrieved_context = rag.process_query(current_info, "gpt-4")
+    retrieved_context = rag.process_query_v2(current_info, "gpt-4")
     print("Retrieved Context:\n", retrieved_context)
     prompt_text = prompt.format(
         current_info=current_info, 
