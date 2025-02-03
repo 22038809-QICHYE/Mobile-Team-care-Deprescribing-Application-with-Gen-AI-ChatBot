@@ -6,6 +6,13 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.prompts import PromptTemplate
 from typing import List
+# RePhraseQuery
+from langchain.retrievers import RePhraseQueryRetriever
+from langchain_core.output_parsers import StrOutputParser
+# EnsembleRetriever
+from langchain.retrievers import EnsembleRetriever
+from langchain_community.retrievers import BM25Retriever
+from langchain_core.documents import Document
 # Set logging for the queries
 import logging
 
@@ -31,9 +38,9 @@ class Retriever:
         """
         self.search_type = search_type
         self.search_kwargs = search_kwargs or {'k': 20}  # Default to 20 documents
-        self.chroma_client = ChromaManager().vectorstore_client
-        
+        self.chroma_client = ChromaManager()
 
+    
     def _get_retriever(self, search_type=None, search_kwargs=None):
         """
         Create a new retriever instance with custom or default search parameters.
@@ -42,7 +49,10 @@ class Retriever:
         :param search_kwargs: Override the search kwargs (default: class-level search_kwargs).
         :return: A configured retriever instance.
         """
-        return self.chroma_client.as_retriever(
+        # To switch to "Unstructured_data" collection
+        # self.chroma_client.set_active_collection("Unstructured_data")
+
+        return self.chroma_client.vectorstore_client.as_retriever(
             search_type=search_type or self.search_type,
             search_kwargs=search_kwargs or self.search_kwargs
         )
@@ -67,7 +77,7 @@ class Retriever:
         :param query: The query for which to retrieve documents.
         :return: A list of retrieved documents.
         """
-        retriever = self.chroma_client.as_retriever(
+        retriever = self._get_retriever(
             search_type="mmr", 
             search_kwargs={"k": 200, "fetch_k": 100}  # Fetch up to 10 documents
         )
@@ -117,10 +127,50 @@ class Retriever:
             print(f"Retrieving with filter criteria: {filter_criteria}")
         results = retriever.invoke(query)
         return results
-    
-            
+    #==========================
+
+    #=== EnsembleRetriever ===
+    def retrieve_ensemble(self, query, k=10):
+        try:
+            # Normal Retriever
+            retriever = self._get_retriever(
+                search_type='similarity',
+                search_kwargs={'k': k}
+            )
+
+            # Fetch stored documents using the existing function in Chroma class
+            stored_docs = self.chroma_client.list_documents()
+
+            # Convert stored_docs to a list of Document objects
+            documents = [
+                Document(page_content=doc["text"], metadata={"id": doc["id"], **doc.get("metadata", {})}) 
+                for doc in stored_docs
+            ]
+
+            # Initialize BM25 Retriever
+            bm25_retriever = BM25Retriever.from_documents(documents)
+            bm25_retriever.k = k  # Number of documents to retrieve
+
+            # Ensemble Retriever
+            ensemble_retriever = EnsembleRetriever(
+                retrievers=[bm25_retriever, retriever],
+                weights=[0.5, 0.5]
+            )   
+
+            # Retrieve documents
+            results = ensemble_retriever.invoke(query)
+
+            print(f"Retrieved {len(results)} documents using EnsembleRetriever with MMR and BM25.")
+            return results
+
+        except Exception as e:
+            print(f"Error during Ensemble retrieval: {e}")
+            return []
+    #=========================
+
+    #==== Retrieval with LLM ====
     #=== MultiQuery Retrieval ===
-    def retrieve_multi_query(self, query, k=20):
+    def retrieve_multi_query(self, query, k=5):
         """
         Perform retrieval using MultiQueryRetriever and return both documents and generated queries.
         
@@ -134,9 +184,9 @@ class Retriever:
         prompt = PromptTemplate(
             input_variables=["question"],
             template="""You are an AI language model assistant. Your task is to generate specific 
-            questions based on the given user question. For each medication and condition mentioned, 
+            questions based on the given user question. For a age and gender and for each medication and condition mentioned, 
             create a question that asks for recommendations. The format should be: 
-            'What are the recommendations for [medication/condition]?' 
+            'What are the recommendations for a [age] years old [gender] [taking/with] [medication/condition]?' 
             Ensure that you cover all medications and conditions mentioned in the original question. 
             Provide these questions separated by newlines.
             Original question: {question}"""
@@ -148,7 +198,11 @@ class Retriever:
         try:
             # Initialize MultiQueryRetriever
             retriever = MultiQueryRetriever(
-                retriever=self.chroma_client.as_retriever(), llm_chain=llm_chain
+                retriever=self._get_retriever(
+                    search_type='similarity', 
+                    search_kwargs={'k': k}
+                ), 
+                llm_chain=llm_chain
             )
             # Invoke the retriever to get results
             results = retriever.invoke(query)
@@ -159,14 +213,72 @@ class Retriever:
             
             print(f"Retrieved {len(results)} documents using MultiQueryRetriever.")
             
-            # Limit the number of retrieved documents to k
-            limited_results = results[:k]  # Only take the top k documents
-            return limited_results, generated_queries  # Return both documents and generated queries
+
+            return results, generated_queries  # Return both documents and generated queries
         except Exception as e:
             print(f"Error during MultiQuery retrieval: {e}")
             return [], []
+    #=== RePhraseQuery Retrieval ===
+    def retrieve_rephrase_query(self, query, k=20):
+        """
+        Perform retrieval using RePhraseQueryRetriever with modern LangChain composition.
+        
+        :param query: The query for which to retrieve documents.
+        :param k: Number of documents to retrieve (default: 20).
+        :return: A list of retrieved documents.
+        """
+        try:
+            # Initialize the language model for query rephrasing
+            llm = ChatOpenAI(temperature=0)
+            
+            # Create a custom prompt for query rephrasing
+            QUERY_PROMPT = PromptTemplate(
+                input_variables=["question"],
+                template="""You are an advanced AI specialized in improving search queries for better information retrieval.  
+                Given the following user question, generate a more precise and alternative version of the query while preserving its meaning.  
+                Ensure the rephrased query remains contextually relevant and optimized for search.  
 
-    #=== Result formating ===
+                User Query: {question}  
+                Rephrased Query:"""
+            )
+
+            # Create the query rephrasing chain
+            rephrase_chain = (
+                QUERY_PROMPT | llm | StrOutputParser()
+            )
+            
+            # Generate the rephrased query
+            rephrased_query = rephrase_chain.invoke({"question": query})
+            
+            # Create the RePhraseQueryRetriever
+            rephrase_retriever = RePhraseQueryRetriever(
+                retriever=self._get_retriever(
+                    search_type='similarity', 
+                    search_kwargs={'k': k}
+                ), 
+                llm_chain=rephrase_chain
+            )
+            
+            # Invoke the retriever to get results
+            results = rephrase_retriever.invoke(query)
+            
+            # Log and print the original and rephrased queries
+            logging.info(f"Original Query: {query}")
+            logging.info(f"Rephrased Query: {rephrased_query}")
+            
+            print("\n--- Query Rephrasing ---")
+            print(f"\nOriginal Query: \n{query}")
+            print(f"\nRephrased Query: \n{rephrased_query}")
+            
+            print(f"\nRetrieved {len(results)} documents using RePhraseQueryRetriever.")
+            return results
+        
+        except Exception as e:
+            print(f"Error during RePhraseQuery retrieval: {e}")
+            return []
+    #===============================
+
+    #=== Result formating for terminal display ===    
     def format_results(self, results):
         """
         Format the retrieved results for better readability.
@@ -179,17 +291,18 @@ class Retriever:
 
         table_data = []
         for i, doc in enumerate(results, start=1):
-            content_preview = doc.page_content[:60] + "..." if len(doc.page_content) > 100 else doc.page_content
-            metadata= doc.metadata
-            table_data.append([i, content_preview, metadata])
+            content_preview = doc.page_content[:120] + "..." if len(doc.page_content) > 100 else doc.page_content
+            source = doc.metadata.get("source", "N/A")  # Extract only 'source' field from metadata
+            table_data.append([i, content_preview, source])
 
-        headers = ["#", "Content (Preview)", "Metadata"]
+        headers = ["#", "Content (Preview)", "Source"]
         return tabulate(table_data, headers=headers, tablefmt="grid")
-    
+
+#=== Testing ===
 def test_script1():
     retriever = Retriever()
-    query = "Age: 78, Gender: female, Medications: Ciprofloxacin (5mg diphenoxylate & 0.05mg atropine QDS), Tolterodine IR (2mg BD), Brinzolamide (1 drop TDS), Conditions: Severe diarrhoea, dementia, overactive bladder syndrome, Chronic glaucoma"
-    
+    query = "Age: 78, Gender: male, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
+
     '''
     # Test 1: Default retrieval
     print("\n--- Testing Default Retrieval ---")
@@ -211,8 +324,7 @@ def test_script1():
     print("\n--- Testing Filtered Retrieval ---")
     filtered_results = retriever.retrieve_with_filter(query, filter_criteria)
     print(retriever.format_results(filtered_results))
-    '''
-
+    
     # Test 5: MultiQuery retrieval
     print("\n--- Testing MultiQuery Retrieval ---")
     retrieved_docs, generated_queries = retriever.retrieve_multi_query(query)
@@ -220,9 +332,19 @@ def test_script1():
     print(retriever.format_results(retrieved_docs))
     # Display the generated queries
     print("\nGenerated Queries:")
-    for query in generated_queries:
-        print(query)
-
+    for GEN_query in generated_queries:
+        print(GEN_query)
+    
+    # Test 6: RePhraseQuery retrieval
+    print("\n--- Testing RePhraseQuery Retrieval ---")
+    retrieved_docs = retriever.retrieve_rephrase_query(query)
+    print(retriever.format_results(retrieved_docs))
+    '''
+    # Test 7: Ensemble retrieval
+    print("\n--- Testing Ensemble Retrieval ---")
+    ensemble_results = retriever.retrieve_ensemble(query)
+    print(retriever.format_results(ensemble_results))
+    
 
 if __name__ == "__main__":    
     try:
