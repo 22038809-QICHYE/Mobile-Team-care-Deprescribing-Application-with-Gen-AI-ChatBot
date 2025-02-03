@@ -98,3 +98,5 @@ To use the Admin Web Page, follow these steps:
 
 11. When deleting resource, a confirmation button will appear on your screen when clicking delete, simply press `OK` to carry on.
 
+12. When viewing resources, clicking on file name will navigate you to site which shows content of resource
+
