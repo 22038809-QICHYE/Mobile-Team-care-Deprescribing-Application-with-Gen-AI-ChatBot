@@ -13,91 +13,107 @@ class ChromaManager:
 
         # Load configuration values
         self.chroma_path = os.getenv("CHROMA_PATH")
-        self.collection_name = os.getenv("COLLECTION_NAME")
+        self.collection_name_s = os.getenv("COLLECTION_NAME_S")  # Structured_data
+        self.collection_name_u = os.getenv("COLLECTION_NAME_U")  # Unstructured_data
 
-        if not self.chroma_path or not self.collection_name:
-            raise ValueError("CHROMA_PATH and COLLECTION_NAME must be set in the .env file.")
+        if not self.chroma_path or not self.collection_name_s or not self.collection_name_u:
+            raise ValueError("CHROMA_PATH, COLLECTION_NAME_S, and COLLECTION_NAME_U must be set in the .env file.")
 
         # Initialize the embedding function
         self.embedding_function = PubMedBERT()
 
-        # Initialize the ChromaDB client for collection management
+        # Initialize the ChromaDB client
         self.client = chromadb.PersistentClient(path=self.chroma_path)
-        self.collection = self.client.get_or_create_collection(
-            name=self.collection_name, 
-            embedding_function=self.embedding_function
-        )
 
-        # Initialize the Chroma client for document management
+        # Initialize both collections
+        self.collections = {
+            "Structured_data": self.client.get_or_create_collection(
+                name=self.collection_name_s,
+                embedding_function=self.embedding_function
+            ),
+            "Unstructured_data": self.client.get_or_create_collection(
+                name=self.collection_name_u,
+                embedding_function=self.embedding_function    
+            )
+        }
+
+        # Set the default collection
+        self.active_collection = self.collection_name_s
+
+        # Initialize LangChain Chroma wrapper for retrieval
         self.vectorstore_client = Chroma(
             client=self.client,
-            collection_name=self.collection_name,
+            collection_name=self.collection_name_s,
             embedding_function=self.embedding_function
         )
 
 
-    #=== COLLECTIONS ===
+    # === COLLECTIONS ===
+    def set_active_collection(self, collection_name: str):
+        """
+        Switch between Structured_data and Unstructured_data collections.
+
+        :param collection_name: Name of the collection to use.
+        """
+        if collection_name not in self.collections:
+            raise ValueError(f"Invalid collection name. Choose from: {list(self.collections.keys())}")
+
+        self.active_collection = collection_name
+        self.vectorstore_client = Chroma(
+            client=self.client,
+            collection_name=self.collections[collection_name].name,
+            embedding_function=self.embedding_function
+        )
+
+    def get_current_collection(self):
+        """Return the name of the currently active collection."""
+        return self.active_collection
+    
     def list_collections(self):
         """
         List all available collections in ChromaDB.
-        
+
         :return: List of collection names.
         """
-        return [collection.name for collection in self.client.list_collections()]
-        
-    def switch_collection(self, new_collection_name):
-        """
-        Switch to a different collection.
+        try:
+            return self.client.list_collections()  # Directly returns a list of collection names in v0.6.0+
+        except Exception as e:
+            print(f"Error listing collections: {e}")
+            return []
 
-        :param new_collection_name: Name of the collection to switch to.
-        """
-        self.collection_name = new_collection_name
-        self.collection = self.client.get_or_create_collection(name=new_collection_name)
-        print(f"Switched to collection: {self.collection_name}")
-
-    def delete_collection(self, collection_name):
+    def delete_collection(self, collection_name: str):
         """
         Delete a collection.
 
         :param collection_name: Name of the collection to delete.
         """
-        self.client.delete_collection(name=collection_name)
-        print(f"Deleted collection: {collection_name}")
+        if collection_name in self.collections:
+            self.client.delete_collection(name=self.collections[collection_name].name)
+            del self.collections[collection_name]
+            print(f"Deleted collection: {collection_name}")
+        else:
+            print(f"Collection '{collection_name}' not found.")
 
-
-    #=== DOCUMENTS ===
+    # === DOCUMENTS ===
     def list_documents(self):
         """
         List all documents in the current collection.
 
-        :return: List of documents with their IDs and metadata.
+        :return: List of documents with their IDs, text, and metadata.
         """
-        if not self.collection:
-            raise ValueError("Collection is not initialized.")
-        
-        # Fetch all documents in the collection
-        documents = self.collection.get()
-        
-        # Check if the collection has any documents
+        collection = self.collections[self.active_collection]
+        documents = collection.get()
+
         if not documents or not documents.get("documents"):
             print("No documents found in the collection.")
             return None
 
-        # Format the documents
-        doc_list = [
-            {
-                "id": doc_id,
-                "text": doc_text,
-                "metadata": metadata
-            }
+        return [
+            {"id": doc_id, "text": doc_text, "metadata": metadata}
             for doc_id, doc_text, metadata in zip(
-                documents["ids"], 
-                documents["documents"], 
-                documents["metadatas"]
+                documents["ids"], documents["documents"], documents["metadatas"]
             )
         ]
-        
-        return doc_list
 
     def add_documents(self, documents):
         """
@@ -113,61 +129,42 @@ class ChromaManager:
             Document(page_content=doc["text"], metadata={"id": doc["id"], **doc.get("metadata", {})})
             for doc in documents
         ]
-        
-        # Add the documents to the vectorstore
-        self.vectorstore_client.add_documents(document_objects)
 
-        """
-        # Synchronize collection in ChromaDB
-        for doc in documents:
-            self.collection.add(
-                ids=[doc["id"]],
-                documents=[doc["text"]],
-                metadatas=[doc.get("metadata", {})]
-            )
-        """
+        # Add the documents to the active vector store
+        self.vectorstore_client.add_documents(document_objects)
 
     def delete_document(self, document_id):
         """
-        Delete a specific document by ID.
+        Delete a specific document by ID in a active collection.
 
         :param document_id: ID of the document to delete.
         """
-        if not self.collection:
-            raise ValueError("Collection is not initialized.")
+        collection = self.collections[self.active_collection]
 
-        # Fetch document to check if it exists
-        existing_docs = self.collection.get(ids=[document_id])
-        if not existing_docs["ids"] or not existing_docs["ids"][0]:
+        existing_docs = collection.get(ids=[document_id])
+        if not existing_docs["ids"]:
             print(f"Document with ID '{document_id}' does not exist in the collection.")
             return
 
-        # Proceed with deletion
-        self.collection.delete(ids=[document_id])
+        collection.delete(ids=[document_id])
         print(f"Deleted document with ID: {document_id}")
-    
+
     def delete_document_via_metadata(self, metadata_id):
         """
         Delete a specific document by its metadata 'id'.
 
         :param metadata_id: Metadata 'id' of the document to delete.
         """
-        if not self.collection:
-            raise ValueError("Collection is not initialized.")
+        collection = self.collections[self.active_collection]
+        documents = collection.get()
 
-        # Fetch all documents in the collection
-        documents = self.collection.get()
-
-        # Check if documents exist
         if not documents or not documents.get("documents"):
-            print(f"No documents found in the collection.")
+            print("No documents found in the collection.")
             return
 
-        # Search for the document with the specified metadata 'id'
         for doc_id, doc_metadata in zip(documents["ids"], documents["metadatas"]):
             if doc_metadata.get("id") == metadata_id:
-                # Delete the document by its Chroma ID
-                self.collection.delete(ids=[doc_id])
+                collection.delete(ids=[doc_id])
                 print(f"Deleted document with metadata ID: {metadata_id}")
                 return
 
@@ -179,156 +176,160 @@ class ChromaManager:
 
         :param source_value: The value of the 'source' metadata to match for deletion.
         """
-        if not self.collection:
-            raise ValueError("Collection is not initialized.")
+        collection = self.collections[self.active_collection]
+        documents = collection.get()
 
-        # Fetch all documents in the collection
-        documents = self.collection.get()
-
-        # Check if documents exist
         if not documents or not documents.get("documents"):
             print("No documents found in the collection.")
             return
 
-        # List to store IDs of documents to delete
-        ids_to_delete = []
+        ids_to_delete = [doc_id for doc_id, doc_metadata in zip(documents["ids"], documents["metadatas"]) 
+        if doc_metadata.get("source") == source_value]
 
-        # Search for documents with the specified metadata 'source'
-        for doc_id, doc_metadata in zip(documents["ids"], documents["metadatas"]):
-            if doc_metadata.get("source") == source_value:
-                ids_to_delete.append(doc_id)
-
-        # Delete the documents by their IDs
         if ids_to_delete:
-            self.collection.delete(ids=ids_to_delete)
+            collection.delete(ids=ids_to_delete)
             print(f"Deleted documents with source '{source_value}': {ids_to_delete}")
         else:
             print(f"No documents found with source '{source_value}'.")
 
 
-def test_script1():
-        # Initialize ChromaManager
-        print("\nInitializing ChromaManager...")
-        manager = ChromaManager()
-        print("ChromaManager initialized successfully.")
-        
-        # List available collections
-        print("\nListing available collections...")
-        collections = manager.list_collections()
-        print(f"Available collections: {collections}")
-        '''
-        # Test add_documents
-        sample_documents = [
-            {"id": "doc1", "text": "This is a sample document.", "metadata": {"source": "test"}},
-            {"id": "doc2", "text": "Another example of a document.", "metadata": {"source": "test"}}
-        ]
-        print("\nAdding documents...")
-        manager.add_documents(sample_documents)
-        print("Documents added successfully.")
-        '''
-        # Test list_documents
-        print("\nListing all documents in the collection...")
-        documents = manager.list_documents()
-        if documents:
-            print("Documents in collection:")
-            for doc in documents:
-                print(f"ID: {doc['id']}, Text: {doc['text']}, Metadata: {doc['metadata']}")
-        else:
-            print("No documents found in the collection.")
+def test_collection_add_doc():
+    # Initialize Chroma Manager
+    chroma_manager = ChromaManager()
 
-        '''
-        # Test deleting a document
-        doc_id_to_delete = "5ed81d86-a7a9-413a-8aed-c36024326a67"
-        print(f"\nDeleting document with ID: '{doc_id_to_delete}'...")
-        manager.delete_document(document_id=doc_id_to_delete)
-        
-        # Test list_documents
-        print("\nListing all documents in the collection...")
-        documents = manager.list_documents()
-        if documents:
-            print("Documents in collection:")
-            for doc in documents:
-                print(f"ID: {doc['id']}, Text: {doc['text']}, Metadata: {doc['metadata']}")
-        else:
-            print("No documents found in the collection.")
-        
-        # Test switching collections
-        new_collection_name = "Unstructured_data"
-        print(f"\nSwitching to new collection: '{new_collection_name}'...")
-        manager.switch_collection(new_collection_name=new_collection_name)
-        
-        # Test deleting the collection
-        print(f"\nDeleting collection: '{new_collection_name}'...")
-        manager.delete_collection(collection_name=new_collection_name)
-        print(f"Collection '{new_collection_name}' deleted successfully.")
-       
-        '''
-        # Test deleting a document via source
-        doc_id_to_delete = "C://VS_CODES//RAG//Upload\\Table 6.csv"
-        print(f"\nDeleting document with ID: '{doc_id_to_delete}'...")
-        manager.delete_documents_by_metadata_source(doc_id_to_delete)
-        
+    # === Test Structured_data Collection ===
+    print("\n--- Testing Structured_data Collection ---")
 
-def test_script2():
-        # Initialize ChromaManager
-        print("\nInitializing ChromaManager...")
-        manager = ChromaManager()
-        print("ChromaManager initialized successfully.")
-        """
-        # List available collections
-        print("\nListing available collections...")
-        collections = manager.list_collections()
-        print(f"Available collections: {collections}")
+    # Getting name of current collection
+    current_collection=chroma_manager.get_current_collection()
+    print(f"Currently using {current_collection} collection.")
 
-        # Test add_documents
-        sample_documents = [
-            {"id": "doc1", "text": "This is a sample document.", "metadata": {"source": "test"}},
-            {"id": "doc2", "text": "Another example of a document.", "metadata": {"source": "test"}}
-        ]
-        print("\nAdding documents...")
-        manager.add_documents(sample_documents)
-        print("Documents added successfully.")
-        
-        # Test list_documents
-        print("\nListing all documents in the collection...")
-        documents = manager.list_documents()
-        if documents:
-            print("Documents in collection:")
-            for doc in documents:
-                print(f"ID: {doc['id']}, Text: {doc['text']}, Metadata: {doc['metadata']}")
-        else:
-            print("No documents found in the collection.")
-        """
-        # Test deleting a document by metadata ID
-        metadata_id_to_delete = "csv_131"
-        print(f"\nDeleting document with metadata ID: '{metadata_id_to_delete}'...")
-        manager.delete_document_via_metadata(metadata_id=metadata_id_to_delete)
+    # Add a document to Structured_data
+    structured_doc = [
+        {"id": "structured_1", "text": "This is the first structured data document for testing.", "metadata": {"source": "test_structured"}},
+        {"id": "structured_2", "text": "This is the second structured data document for testing.", "metadata": {"source": "test_structured"}}
+    ]
+    chroma_manager.add_documents(structured_doc)
+    print("Document added to Structured_data.")
 
-        # Test list_documents
-        print("\nListing all documents in the collection...")
-        documents = manager.list_documents()
-        if documents:
-            print("Documents in collection:")
-            for doc in documents:
-                print(f"ID: {doc['id']}, Text: {doc['text']}, Metadata: {doc['metadata']}")
-        else:
-            print("No documents found in the collection.")
-        """
-        # Test switching collections
-        new_collection_name = "new_test_collection"
-        print(f"\nSwitching to new collection: '{new_collection_name}'...")
-        manager.switch_collection(new_collection_name=new_collection_name)
-
-        # Test deleting the collection
-        print(f"\nDeleting collection: '{new_collection_name}'...")
-        manager.delete_collection(collection_name=new_collection_name)
-        print(f"Collection '{new_collection_name}' deleted successfully.")
-        """
+    # List all documents in Structured_data
+    structured_docs = chroma_manager.list_documents()
+    print("Documents in Structured_data:", structured_docs)
 
 
+    # === Test Unstructured_data Collection ===
+    print("\n--- Testing Unstructured_data Collection ---")
+
+    # Switch to Unstructured_data collection
+    chroma_manager.set_active_collection("Unstructured_data")
+
+    # Getting name of current collection
+    current_collection=chroma_manager.get_current_collection()
+    print(f"Currently using {current_collection} collection.")
+
+    # Add a document to Unstructured_data
+    unstructured_doc = [
+        {"id": "unstructured_1", "text": "This is the first unstructured data document for testing.", "metadata": {"source": "test_unstructured"}},
+        {"id": "unstructured_2", "text": "This is the second unstructured data document for testing.", "metadata": {"source": "test_unstructured"}}
+    ]
+    chroma_manager.add_documents(unstructured_doc)
+    print("Document added to Unstructured_data.")
+
+    # List all documents in Unstructured_data
+    unstructured_docs = chroma_manager.list_documents()
+    print("Documents in Unstructured_data:", unstructured_docs)
+
+    # Test listing collections
+    print("\nListing available collections...")
+    collections = chroma_manager.list_collections()
+    print(f"Available collections: {collections}")
+
+def test_collection_del_doc():
+    # Initialize Chroma Manager
+    chroma_manager = ChromaManager()
+
+    # === Test Structured_data Collection ===
+    print("\n--- Testing Structured_data Collection ---")
+
+    # Getting name of current collection
+    current_collection=chroma_manager.get_current_collection()
+    print(f"\nCurrently using {current_collection} collection.")
+
+    # Test deleting documents by metadata source
+    # metadata_source = "C://VS_CODES//RAG//Upload\\Table 6.csv"
+    metadata_source = "test_structured"
+    print(f"\nDeleting documents with source '{metadata_source}'...")
+    chroma_manager.delete_documents_by_metadata_source(metadata_source)
+
+    # List all documents in Structured_data
+    structured_docs = chroma_manager.list_documents()
+    print("\nDocuments in Structured_data:", structured_docs)
+
+
+    # === Test Unstructured_data Collection ===
+    print("\n--- Testing Unstructured_data Collection ---")
+
+    # Switch to Unstructured_data collection
+    chroma_manager.set_active_collection("Unstructured_data")
+    
+    # Getting name of current collection
+    current_collection=chroma_manager.get_current_collection()
+    print(f"\nCurrently using {current_collection} collection.")
+
+    # Test deleting documents by metadata source
+    # metadata_source = "C://VS_CODES//RAG//Upload\\BEERS J American Geriatrics Society - 2023 -  - American Geriatrics Society 2023 updated AGS Beers Criteria  for potentially.pdf"
+    metadata_source = "test_unstructured"
+    print(f"\nDeleting documents with source '{metadata_source}'...")
+    chroma_manager.delete_documents_by_metadata_source(metadata_source)
+
+    # List all documents in Unstructured_data
+    unstructured_docs = chroma_manager.list_documents()
+    print("Documents in Unstructured_data:", unstructured_docs)
+
+    # Test listing collections
+    print("\nListing available collections...")
+    collections = chroma_manager.list_collections()
+    print(f"Available collections: {collections}")
+
+def hy_app_test():
+    # Initialize Chroma Manager
+    chroma_manager = ChromaManager()
+
+    # === Test Structured_data Collection ===
+    print("\n--- Testing Structured_data Collection ---")
+
+    # Getting name of current collection
+    current_collection=chroma_manager.get_current_collection()
+    print(f"Currently using {current_collection} collection.")
+
+    # List all documents in Structured_data
+    structured_docs = chroma_manager.list_documents()
+    print("Documents in Structured_data:", structured_docs)
+    
+    """
+    # === Test Unstructured_data Collection ===
+    print("\n--- Testing Unstructured_data Collection ---")
+
+    # Switch to Unstructured_data collection
+    chroma_manager.set_active_collection("Unstructured_data")
+
+    # Getting name of current collection
+    current_collection=chroma_manager.get_current_collection()
+    print(f"Currently using {current_collection} collection.")
+
+    # List all documents in Unstructured_data
+    unstructured_docs = chroma_manager.list_documents()
+    print("Documents in Unstructured_data:", unstructured_docs)
+
+    # Test listing collections
+    print("\nListing available collections...")
+    collections = chroma_manager.list_collections()
+    print(f"Available collections: {collections}")
+    """
+    
 if __name__ == "__main__":
     try:
-        test_script1()
+        hy_app_test()
 
     except Exception as e:
         print(f"\nAn error occurred during testing: {e}")
