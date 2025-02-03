@@ -42,7 +42,8 @@ To install the TDA Chatbot, please follow these steps:
 
 2. Install the required dependencies by running the following command:
    ```
-   pip install -r requirements.txt
+   python -m pip install -r requirements.txt
+
    ```
 
 3. Obtain an API key from OpenAI and Gimini and add it to the `.env` file in the project directory.
