@@ -1,4 +1,5 @@
 import os
+import time
 import streamlit as st
 from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -67,10 +68,17 @@ class Message(Base):
     role = Column(String, nullable=False)
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.utcnow)
+    feedback = Column(Integer, nullable=True)  # Changed to Integer for star rating
     session = relationship("Session", back_populates="messages")
 
 
+
 Base.metadata.create_all(bind=engine)
+
+def generate_response_with_spinner():
+    with st.spinner("Generating response for you..."):
+        time.sleep(3)  # Simulate processing time
+    return "Here is the AI-generated response."
 
 # Function to generate a default session name
 def generate_session_name(admin_username):
@@ -169,7 +177,7 @@ if not st.session_state["read_only"]:
 
     if st.session_state.get("model_name"):
         model = setupModel(st.session_state["model_name"])
-
+        
 
 # Main content rendering
 st.title(f"Welcome, {username}!")
@@ -190,11 +198,16 @@ for message in st.session_state["messages"]:
         unsafe_allow_html=True,
     )
 
+# Ensure feedback session state exists
+if "feedback" not in st.session_state:
+    st.session_state["feedback"] = {}
+
+# Simulate a chat interaction
 if not st.session_state["read_only"]:
     if prompt := st.chat_input("Your message:"):
         st.session_state["messages"].append({"role": username, "content": prompt})
         save_message(username, prompt)
-        
+
         st.markdown(
             f"""
             <div class="chat-row row-reverse">
@@ -204,22 +217,24 @@ if not st.session_state["read_only"]:
             """,
             unsafe_allow_html=True,
         )
-        
-        # Corn
-        st.session_state["current_info"] = retieve_patient_info(prompt, chosen_model, st.session_state["current_info"])
-        print("Current Info:", st.session_state["current_info"])  # Debugging: Log current info
 
-        validation = validate(decision_model, st.session_state["current_info"])
-        print("Validation Result:", validation)  # Debugging: Log validation result
+        # Corn (AI Generation Response)
+        with st.spinner("Generating response for you..."):
+            st.session_state["current_info"] = retieve_patient_info(prompt, chosen_model, st.session_state["current_info"])
+            print("Current Info:", st.session_state["current_info"])  # Debugging: Log current info
 
-        if check_score(validation):
-            response = generate(st.session_state["current_info"], chosen_model)
-            print("Recommendation:", response)  # Debugging: Log AI recommendation
-            st.session_state["current_info"] = "" # Corn
-        else:
-            response = get_info(st.session_state["current_info"],prompt, chosen_model)
-            print("Response:", response)  # Debugging: Log AI response
+            validation = validate(decision_model, st.session_state["current_info"])
+            print("Validation Result:", validation)  # Debugging: Log validation result
 
+            if check_score(validation):
+                response = generate(st.session_state["current_info"], chosen_model)
+                print("Recommendation:", response)  # Debugging: Log AI recommendation
+                st.session_state["current_info"] = "" # Corn
+            else:
+                response = get_info(st.session_state["current_info"],prompt, chosen_model)
+                print("Response:", response)  # Debugging: Log AI response
+
+        # Display the response after the spinner is done
         st.markdown(
             f"""
             <div class="chat-row">
@@ -229,18 +244,57 @@ if not st.session_state["read_only"]:
             """,
             unsafe_allow_html=True,
         )
-        
-        # Feedback on AI response
-        sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
-        selected = st.feedback("thumbs")
 
-        if selected is not None:
-            feedback_text = sentiment_mapping[selected]
-            st.markdown(f"You selected: {feedback_text}")
-            print(f"User Feedback: {feedback_text}")  # Prints feedback to the terminal
-
-
+        # Save the AI response in session history
         st.session_state["messages"].append({"role": "assistant", "content": response})
         save_message("assistant", response)
-else:
+
+# Unique key for feedback based on number of messages
+feedback_key = f"feedback_{len(st.session_state['messages'])}"
+
+# Feedback on AI response (Always visible)
+selected = st.feedback("stars", key=feedback_key)
+
+if selected is not None:
+    try:
+        feedback_value = int(selected) + 1  # Convert to integer (stars are 0-indexed)
+        
+        # Display different messages based on rating
+        if feedback_value <= 3:
+            st.markdown("We'll do our best to improve responses")
+        else:
+            st.markdown("We are happy to be of service to you!")
+            
+        print(f"User Feedback: {feedback_value} stars")  # Debugging: Ensure feedback is captured
+
+        # Open a new database session
+        db_session = SessionLocal()
+
+        # Fetch the last AI-generated message for the session
+        last_ai_message = (
+            db_session.query(Message)
+            .filter_by(session_id=st.session_state["session_id"], role="assistant")
+            .order_by(Message.timestamp.desc())
+            .first()
+        )
+
+        # Debugging: Check if a message was found
+        if last_ai_message:
+            print("Feedback saved successfully!")
+            print(f"Found AI message with ID: {last_ai_message.message_id}")  # Debugging
+            last_ai_message.feedback = feedback_value  # Update feedback column
+            db_session.commit()
+        else:
+            print("No AI message found.")  # Debugging
+            st.error("No AI response found to attach feedback.")
+
+        db_session.close()
+
+    except Exception as e:
+        st.error(f"Error saving feedback: {e}")
+        print(f"Error saving feedback: {e}")  # Debugging
+
+# Read-only mode warning if applicable
+if st.session_state["read_only"]:
     st.warning("Read-only mode: You can view chat history but cannot send messages.")
+
