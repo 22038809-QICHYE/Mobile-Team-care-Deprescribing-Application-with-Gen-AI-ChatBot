@@ -36,20 +36,25 @@ json_model = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=GPT4.api_key)
 
 decision_model = json_model.bind(response_format={"type": "json_object"})
 
-def get_info(current_info, model):
+def get_info(current_info, query, model):
     prompt = PromptTemplate.from_template("""
-    System: You are a patient information validator.
-    Check that patient information consists of the following fields:
+    You are a patient information support staff.
+    Your task is to check that patient information consists of the following fields:
     Age, Gender, Medications, Medical Conditions. 
     At least one medication and one medical condition.
     If any of these required fields are not stated, ask the patient for the required fields.
+    If the user is greeting you, reply with a kind and friendly tone.
+    If the user asks an unrelated question, apologize that you are unable to answer.
     Always maintain a kind and friendly tone when interacting with users.
-
+    Avoid generic responses and without preambles.
+    
     Patient Information: {current_info}
+    User query: {query}
     """)
 
     get_info_prompt_text = prompt.format(
-        current_info=current_info
+        current_info=current_info, 
+        query=query
         )
 
     response = model.invoke(get_info_prompt_text)
