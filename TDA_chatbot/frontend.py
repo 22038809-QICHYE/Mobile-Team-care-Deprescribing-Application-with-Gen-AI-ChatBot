@@ -215,8 +215,9 @@ if not st.session_state["read_only"]:
         if check_score(validation):
             response = generate(st.session_state["current_info"], chosen_model)
             print("Recommendation:", response)  # Debugging: Log AI recommendation
+            st.session_state["current_info"] = "" # Corn
         else:
-            response = get_info(st.session_state["current_info"], chosen_model)
+            response = get_info(st.session_state["current_info"],prompt, chosen_model)
             print("Response:", response)  # Debugging: Log AI response
 
         st.markdown(
