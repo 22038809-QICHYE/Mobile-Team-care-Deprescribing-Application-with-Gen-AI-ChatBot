@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 import webbrowser
 from flask import Flask, render_template, request, redirect, url_for, session, flash
@@ -46,10 +47,12 @@ class Message(Base):
     role = Column(String, nullable=False)
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.utcnow)
+    feedback = Column(Integer, nullable=True)  # Changed to Integer for star rating
     session = relationship("Session", back_populates="messages")
 
 Base.metadata.create_all(bind=engine)
 
+# HOME
 @chatbotapp.route("/")
 def home():
     if session.get("logged_out"):
@@ -57,6 +60,8 @@ def home():
         session.pop("logged_out", None)
     return render_template("cb_index.html", content="Welcome to the Main Webpage!")
 
+
+# LOGIN
 @chatbotapp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -79,6 +84,8 @@ def login():
             return redirect(url_for("login"))
     return render_template("cb_login.html")
 
+
+#REGISTER
 @chatbotapp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -109,6 +116,7 @@ def register():
     return render_template("cb_register.html")
 
 
+# CREATE USER
 @chatbotapp.route("/create_admin", methods=["GET", "POST"])
 def create_admin():
     if "admin_id" not in session:
@@ -126,7 +134,6 @@ def create_admin():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
-        is_admin = request.form.get("is_admin") == "on"  # Handle checkbox value
 
         # Check if the username already exists
         if db_session.query(Admin).filter_by(username=username).first():
@@ -139,20 +146,20 @@ def create_admin():
             username=username,
             email=email,
             password=password,
-            is_admin=is_admin  # Set based on checkbox value
+            is_admin= False # Set based on checkbox value
         )
         db_session.add(new_admin)
         db_session.commit()
         db_session.close()
 
-        success = f"User '{username}' created successfully. Admin status: {'Yes' if is_admin else 'No'}."
+        success = f"User '{username}' created successfully."
         return render_template("cb_create_admin.html", success=success)
 
     db_session.close()
     return render_template("cb_create_admin.html", username=admin.username)
 
 
-
+# ADMIN DASHBOARD
 @chatbotapp.route("/cb_admin_view_history", methods=["GET", "POST"])
 def cb_admin_view_history():
     # Redirect to login if the user is not authenticated
@@ -205,8 +212,7 @@ def cb_admin_view_history():
     )
 
 
-
-
+# USER DASHBOARD
 @chatbotapp.route("/view_history")
 def view_history():
     if "admin_id" not in session:
@@ -248,35 +254,7 @@ def view_history():
     )
 
 
-@chatbotapp.route("/delete_session/<int:session_id>", methods=["POST"])
-def delete_session(session_id):
-    if "admin_id" not in session:
-        flash("Unauthorized access.", "danger")
-        return redirect(url_for("view_history"))
-
-    admin_id = session["admin_id"]
-    db_session = SessionLocal()
-    session_to_delete = db_session.query(Session).filter_by(session_id=session_id, admin_id=admin_id).first()
-
-    if not session_to_delete:
-        db_session.close()
-        flash("Session not found or unauthorized.", "danger")
-        return redirect(url_for("view_history"))
-
-    # Delete related messages first (to maintain referential integrity)
-    db_session.query(Message).filter_by(session_id=session_id).delete()
-
-    # Delete the session itself
-    db_session.delete(session_to_delete)
-    db_session.commit()
-    db_session.close()
-
-    flash("Session deleted successfully.", "success")
-    return redirect(url_for("view_history"))
-
-
-
-
+# CHATBOT
 @chatbotapp.route("/chat")
 def chat():
     if "admin_id" not in session or "username" not in session:
@@ -318,7 +296,7 @@ def chat():
     streamlit_path = os.path.join(os.getcwd(), "frontend.py")
     subprocess.Popen(
         [
-            "python", "-m", "streamlit", "run", streamlit_path,
+            sys.executable, "-m", "streamlit", "run", streamlit_path,
             "--server.port", "8501", "--server.headless", "true"
         ]
     )
@@ -327,8 +305,35 @@ def chat():
     return redirect(url_for("success"))
 
 
+# DELETE USER SESSION
+@chatbotapp.route("/delete_session/<int:session_id>", methods=["POST"])
+def delete_session(session_id):
+    if "admin_id" not in session:
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for("view_history"))
+
+    admin_id = session["admin_id"]
+    db_session = SessionLocal()
+    session_to_delete = db_session.query(Session).filter_by(session_id=session_id, admin_id=admin_id).first()
+
+    if not session_to_delete:
+        db_session.close()
+        flash("Session not found or unauthorized.", "danger")
+        return redirect(url_for("view_history"))
+
+    # Delete related messages first (to maintain referential integrity)
+    db_session.query(Message).filter_by(session_id=session_id).delete()
+
+    # Delete the session itself
+    db_session.delete(session_to_delete)
+    db_session.commit()
+    db_session.close()
+
+    flash("Session deleted successfully.", "success")
+    return redirect(url_for("view_history"))
 
 
+# DELETE USER [FOR ADMIN USE ONLY]
 @chatbotapp.route("/delete_user", methods=["GET", "POST"])
 def cb_delete_user():
     # Redirect to login if the user is not authenticated
@@ -387,7 +392,7 @@ def cb_delete_user():
     )
 
 
-
+# DELETE USER [ADMIN USE ONLY]
 @chatbotapp.route("/delete_user/<int:user_id>", methods=["GET", "POST"])
 def delete_user(user_id):
     # Redirect to login if the user is not authenticated
@@ -437,6 +442,7 @@ def delete_user(user_id):
         db_session.close()
 
 
+# FOR LOGIN
 @chatbotapp.route("/success")
 def success():
     return redirect(url_for("view_history"))
@@ -448,6 +454,6 @@ def logout():
     return redirect(url_for("home"))
 
 
-
+# MAIN PORT
 if __name__ == "__main__":
     chatbotapp.run(debug=True, port=5000)
