@@ -76,27 +76,25 @@ To use the Admin Web Page, follow these steps:
 
 1. Ensure that you have installed the required dependencies
 
-2. Before running `app.py`, open the `app.py` code with Visual Studio Code at line 16, ensure that `app.config['UPLOAD_FOLDER'] = 'C:/your/path'` is set to where your upload folder is.
+2. When running `app.py` a link will appear in your terminal, copy paste the link into your desired browser or `ctrl + left click` the link which will send you to the link via your default web browser.
 
-3. When running `app.py` a link will appear in your terminal, copy paste the link into your desired browser or `ctrl + left click` the link which will send you to the link via your default web browser.
+3. The application will launch in your default web browser, displaying a welcome interface.
 
-4. The application will launch in your default web browser, displaying a welcome interface.
+4. Click login on the top left of the screen or click any of the buttons to enter the login screen. 
 
-5. Click login on the top left of the screen or click any of the buttons to enter the login screen. 
+5. Login with the username and password. `Username: admin` `Password: admin`
 
-6. Login with the username and password. `Username: admin` `Password: admin`
+6. When logged in you are able to view, add , edit, delete resources and users.
 
-7. When logged in you are able to view, add , edit, delete resources and users.
-
-8. When adding user, simply fill in the required blanks. For the `Make this user an admin` checkbox, by ticking it you 
+7. When adding user, simply fill in the required blanks. For the `Make this user an admin` checkbox, by ticking it you 
    will be adding an admin who is able to login on the ChatBot web page and the Admin web page. If it is not ticked, 
    the user will not be allowed to access the Admin page even with the correct username and password.
 
-9. When adding resource, ensure that file is in PDF or CSV format then proceed to fill in the blanks.
+8. When adding resource, ensure that file is in PDF or CSV format then proceed to fill in the blanks.
 
-10. When editing simply change the values and click the edit button.
+9. When editing simply change the values and click the edit button.
 
-11. When deleting resource, a confirmation button will appear on your screen when clicking delete, simply press `OK` to carry on.
+10. When deleting resource, a confirmation button will appear on your screen when clicking delete, simply press `OK` to carry on.
 
-12. When viewing resources, clicking on file name will navigate you to site which shows content of resource
+11. When viewing resources, clicking on file name will navigate you to site which shows content of resource
 
