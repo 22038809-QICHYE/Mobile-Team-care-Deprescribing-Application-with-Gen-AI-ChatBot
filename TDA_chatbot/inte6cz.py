@@ -20,8 +20,8 @@ class LLMmodel:
         self.model = model
 
 # Setting up different models and API keys
-GPT4 = LLMmodel("gpt-4", "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")
-GEMINI = LLMmodel("gemini-1.5-flash", "AIzaSyBKseORSyKLbbmc9hoX-4N0LUr4ApWWgOA")
+GPT4 = LLMmodel("gpt-o1", "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")
+GEMINI = LLMmodel("gemini-2.0-flash-exp", "AIzaSyBKseORSyKLbbmc9hoX-4N0LUr4ApWWgOA")
 
 def setupModel(modelname):
     if modelname == "gpt":
@@ -30,7 +30,7 @@ def setupModel(modelname):
         model = ChatGoogleGenerativeAI(model=GEMINI.model, google_api_key=GEMINI.api_key)
     return model
 
-chosen_model = setupModel("gpt")
+
 
 json_model = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=GPT4.api_key)
 
@@ -47,9 +47,14 @@ def get_info(current_info, query, model):
     If the user asks an unrelated question, apologize that you are unable to answer.
     Always maintain a kind and friendly tone when interacting with users.
     Avoid generic responses and without preambles.
+                                          
+    greeting example:
+    User: Hello
+    Hello! How can I assist you today? I'm here to provide medication management suggestions.
     
     Patient Information: {current_info}
     User query: {query}
+                                          
     """)
 
     get_info_prompt_text = prompt.format(
