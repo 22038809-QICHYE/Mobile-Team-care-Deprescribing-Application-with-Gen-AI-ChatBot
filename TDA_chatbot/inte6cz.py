@@ -36,6 +36,7 @@ json_model = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=GPT4.api_key)
 
 decision_model = json_model.bind(response_format={"type": "json_object"})
 
+
 def get_info(current_info, query, model):
     prompt = PromptTemplate.from_template("""
     You are a patient information support staff.
@@ -87,7 +88,11 @@ def generate(current_info, model):
 
     response = model.invoke(prompt_text)
 
+    
+
+
     return response.content
+
 
 def check_score(data):
     data_dict = json.loads(data.strip())  # Ensure JSON is parsed correctly
@@ -123,7 +128,7 @@ def retieve_patient_info(query, model, current_info):
     System: You are a patient information retriever.
     Extract only patient information from the query for retrieval.  
     Check the current patient information provided and add any missing information from the query.
-    Take note that the number provided is the age of the patient.
+    Take note that the number provided is the age of the patient, make sure that it is a valid age before entering.
     M means male, F means female, write the full form in the response.
     If the field is not provided, leave it empty.
     Current Patient Information: {current_info}
@@ -142,4 +147,33 @@ def retieve_patient_info(query, model, current_info):
     info = model.invoke(retrieve_info_prompt_text)
     return info.content
 
+def violation_warning(name, query, model, violation):
+    violation_prompt = PromptTemplate.from_template("""
+    The user's query might not align with our safety guidelines. 
+    Here's what we found:
+    User's Name: {name}
+    User's Query: {query}
+    Potential Issue: {violations}
+
+    Kindly ask the user to reconsider the content in a kind manner to ensure it aligns with our community standards. 
+    Thank the user for understanding and helping us maintain a safe environment.
+    
+    Example:
+    User's Query: stupid
+    Potential Issue:  ['Profanity detected']
+    Dear (User's Name),
+
+    Your recent query seems to contain language which conflicts with our community standards on usage of respectful language. We believe in promoting a safe and friendly environment where every member feels valued and respected.
+
+    We would like to kindly ask you to reconsider your choice of language when submitting future queries. Thank you very much for your understanding and for contributing to a safer, more respectful community.
+    """)
+
+    warning_message = violation_prompt.format(
+        name = name,
+        query=query,
+        violations=violation
+    )
+    response = model.invoke(warning_message)
+
+    return response.content
 
