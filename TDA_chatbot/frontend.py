@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, Da
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
-from inte6cz import generate, setupModel, retieve_patient_info, validate, check_score, chosen_model, decision_model, get_info
+from inte6cz import generate, setupModel, retieve_patient_info, validate, check_score, decision_model, get_info
 
 # Hide Hamburger Menu and Streamlit Header
 hide_st_style = """
@@ -220,18 +220,18 @@ if not st.session_state["read_only"]:
 
         # Corn (AI Generation Response)
         with st.spinner("Generating response for you..."):
-            st.session_state["current_info"] = retieve_patient_info(prompt, chosen_model, st.session_state["current_info"])
+            st.session_state["current_info"] = retieve_patient_info(prompt, model, st.session_state["current_info"])
             print("Current Info:", st.session_state["current_info"])  # Debugging: Log current info
 
             validation = validate(decision_model, st.session_state["current_info"])
             print("Validation Result:", validation)  # Debugging: Log validation result
 
             if check_score(validation):
-                response = generate(st.session_state["current_info"], chosen_model)
+                response = generate(st.session_state["current_info"], model)
                 print("Recommendation:", response)  # Debugging: Log AI recommendation
                 st.session_state["current_info"] = "" # Corn
             else:
-                response = get_info(st.session_state["current_info"],prompt, chosen_model)
+                response = get_info(st.session_state["current_info"],prompt, model)
                 print("Response:", response)  # Debugging: Log AI response
 
         # Display the response after the spinner is done
