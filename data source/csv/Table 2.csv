@@ -1,0 +1,428 @@
+Drugs,Pharmacological class,Rationale,Recommendation,"Quality of
+evidence","Strength of
+recommendation"
+Brompheniramine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Chlorpheniramine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Cyproheptadine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Dimenhydrinate,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Diphenhydramine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.
+Use of diphenhydramine in situations such as acute treatment of severe allergic reactions may be appropriate.",Avoid oral diphenhydramine.,Moderate ,Strong
+Doxylamine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Hydroxyzine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Meclizine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Promethazine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Triprolidine,First-generation antihistamines ,"Highly anticholinergic; clearance reduced with advanced age, and tolerance develops when used as hypnotic; risk of confusion, dry mouth, constipation, and other anticholinergic effects or toxicity. Cumulative exposure to anticholinergic drugs is associated with an increased risk of falls, delirium, and dementia, even in younger adults. Consider total anticholinergic burden during regular medication reviews and be cautious in “young-old” as well as “old-old” adults.",Avoid,Moderate ,Strong
+Nitrofurantoin,Anti-infectives; Antimicrobials ,"Potential for pulmonary toxicity, hepatoxicity, and peripheral neuropathy, especially with long-term use; safer alternatives available.",Avoid in individuals with CrCl <30 mL/min or for long-term suppression.,Low,Strong
+Aspirin,"Non-steroidal anti-inflammatory drugs, non-COX-2-selective, Antiplatelets","1. 
+Risk of major bleeding from aspirin increases markedly in older age. Studies suggest a lack of net benefit and potential for net harm when initiated for primary prevention in older adults. There is less evidence about stopping aspirin among long-term users, although similar principles for initiation may apply. 
+Note: Aspirin is generally indicated for secondary prevention in older adults with established cardiovascular disease.
+
+2. 
+Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use.  Also can increase blood pressure and induce kidney injury. Risks are dose-related.","1.
+Avoid initiating aspirin for primary prevention of cardiovascular disease. Consider deprescribing aspirin in older adults already taking it for primary prevention.
+
+2.
+Applicable for aspirin >325 mg/day:
+Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent (proton-pump inhibitor or misoprostol).
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).","1. High
+
+2. Moderate",Strong
+Warfarin,Vitamin K antagonists,"Compared with DOACs, warfarin has higher risks of major bleeding (particularly intracranial bleeding) and similar or lower effectiveness for the treatment of nonvalvular atrial fibrillation and VTE. DOACs are thus the preferred choice for anticoagulation for most people with these conditions.","Avoid starting warfarin as initial therapy for the treatment of nonvalvular atrial fibrillation or VTE unless alternative options (i.e., DOACs) are  contraindicated or there are substantial barriers to their use.
+
+For older adults who have been using warfarin long-term, it may be reasonable to continue this medication, particularly among those with well controlled INRs (i.e., >70% time in the therapeutic range) and no adverse effects.",High ,Strong
+Rivaroxaban,Factor Xa inhibitors,"At doses used for long-term treatment of VTE or nonvalvular atrial fibrillation, rivaroxaban appears to have a higher risk of major bleeding and GI bleeding in older adults than other DOACs, particularly apixaban. 
+Rivaroxaban may be reasonable in special situations, for example when once-daily dosing is necessary to facilitate medication adherence. All DOACs confer a lower risk of intracranial hemorrhage than warfarin.
+
+When selecting among DOACs and choosing a dose, pay special consideration to kidney function, indication, and body weight.",Avoid for long-term treatment of atrial fibrillation or VTE in favor of safer anticoagulant alternatives. ,Moderate ,Strong
+Dipyridamole ,Antiplatelet agents,Only applicable for oral short-acting. May cause orthostatic hypotension; more effective alternatives available; IV form acceptable for use in cardiac stress testing.,"Avoid, except extended-release combination with aspirin.",Moderate ,Strong
+"Doxazosin
+",Non-selective peripheral alpha-1 blockers,"High risk of orthostatic hypotension and associated harms, especially in older adults; not reccomended as routine treatment for hypertension; alternative agents have superior risk/benefit profile.",Avoid use as an antihypertensive.,Moderate ,Strong
+Prazosin,Non-selective peripheral alpha-1 blockers,"High risk of orthostatic hypotension and associated harms, especially in older adults; not reccomended as routine treatment for hypertension; alternative agents have superior risk/benefit profile.",Avoid use as an antihypertensive.,Moderate ,Strong
+Terazosin,Non-selective peripheral alpha-1 blockers,"High risk of orthostatic hypotension and associated harms, especially in older adults; not reccomended as routine treatment for hypertension; alternative agents have superior risk/benefit profile.",Avoid use as an antihypertensive.,Moderate ,Strong
+Clonidine,Central alpha-agonists,High risk of adverse CNS effects; may cause bradycardia and orthostatic hypotension; not recommended as routine treatment for hypertension.,Avoid clonidine as first-line treatment for hypertension.,Low,Strong
+Guanfacine,Central alpha-agonists,High risk of adverse CNS effects; may cause bradycardia and orthostatic hypotension; not recommended as routine treatment for hypertension.,Avoid other central alpha-agonists for the treatment of hypertension.,Low,Strong
+Nifedipine,Dihydropyridine calcium channel blockers,Potential for hypotension; risk of precipitating myocardial ischemia,Avoid immediate release.,High,Strong
+Amiodarone,Antiarrhythmics,Effective for maintaining sinus rhythm but has greater toxicities than other antiarrhythmics used in atrial fibrillation; may be reasonable first-line therapy in patients with concomitant heart failure or substantial left ventricular hypertrophy if rhythm control is preferred over rate control.,Avoid as first-lin therapy for atrial fibrillation unless the patient has heart failure or substantial left ventricular hypertrophy.,High,Strong
+Dronedarone,Antiarrhythmics,"Worse outcomes in people who have permanent atrial fibrillation or severe or recently decompensated heart failure. In some circumstances, worse outcomes have also been reported in people with HFrEF (e.g., left ventricular ejection fraction <=35%) who have milder symptoms (NYHA class I or II).",Avoid in individuals with permanent atrial fibrillation or severe or recently decompensated heart failure. Use caution in patients with HFrEF with less severe symptoms (NYHA class I or II).,High,Strong
+Digoxin,Cardiac glycosides ,"Use in atrial fibrillation: should not be used as a first-line agent because there are safer and more effective alternatives for rate control. 
+
+Use in heart failure: evidence for benefits and harms of digoxin is conflicting and of lower quality; most (but not all) evidence concerns use in HFrEF. There is strong evidence for other agents as first-line therapy to reduce hospitalizations and mortality in adults with HFrEF. In heart failure, higher dosages are not associated with additional benefits and may increase the risk of toxicity. Use caution in discontinuing digoxin among current users with HFrEF, given limited evidence suggesting worse clinical outcomes after discontinuation. 
+
+Decreased renal clearance of digoxin may lead to an increased risk of toxic effects; further dose reduction may be necessary for those with Stage 4 or 5 chronic kidney disease.","Avoid this rate control agent as first-line therapy for atrial fibrillation. 
+
+Avoid as first-line therapy for heart failure. See rationale for caution about withdrawal in long-term users with HFrEF. 
+
+If used for atrial fibrillation or heart failure, avoid dosages >0.125 mg/day.","Atrial fibrillation; heart failure: Low           
+
+Dosage >0.125 mg/ day: Moderate",Strong
+Amitriptyline,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Amoxapine,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Clomipramine,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Desipramine,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Doxepin,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension; the safety profile of low-dose doxepin (<=6 mg/day) is comparable to that of placebo.","Avoid >6 mg/day, alone or in combination.",High,Strong
+Imipramine,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Nortriptyline,Tricyclic antidepressants,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Paroxetine,Selective serotonin re-uptake inhibitors,"Highly anticholinergic, sedating, and cause orthostatic hypotension.",Avoid alone or in combination.,High,Strong
+Benztropine,Antiparkinsonian agents,"Highly anticholinergic.
+Not recommended for prevention or treatment of extrapyramidal symptoms due to antipsychotics; more effective agents available for treatment of Parkinson disease.",Avoid oral benztropine.,Moderate ,Strong
+Trihexyphenidyl,Antiparkinsonian agents,"Highly anticholinergic.
+Not recommended for prevention or treatment of extrapyramidal symptoms due to antipsychotics; more effective agents available for treatment of Parkinson disease.",Avoid,Moderate ,Strong
+Chlorpromazine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Fluphenazine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Haloperidol,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Perphenazine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Aripiprazole,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Brexpiprazole,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Cariprazine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Clozapine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Lurasidone,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Olanzapine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Paliperidone,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Pimavanserin,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Quetiapine,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Risperidone,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Ziprasidone,Antipsychotics,"Increased risk of stroke and greater rate of cognitive decline and mortality in persons with dementia. Additional evidence suggests an association of increased risk between antipsychotic medication and mortality independent of dementia.
+
+Avoid antipsychotics for behavioral problems of dementia or delirium unless documented nonpharmacologic options (e.g., behavioral interventions) have failed and/or the patient is threatening substantial harm to self or others. If used, periodic deprescribing attempts should be considered to assess ongoing need and/or the lowest effective dose.","Avoid, except in FDA-approved indications such as schizophrenia, bipolar disorder, Parkinson disease psychosis, adjunctive treatment of major depressive disorder, or for short-term use as an antiemetic.",Moderate ,Strong
+Butalbital,Barbiturates,"High rate of physical dependence, tolerance to sleep benefits, greater risk of overdose at low dosages.",Avoid,High,Strong
+Phenobarbital,Barbiturates,"High rate of physical dependence, tolerance to sleep benefits, greater risk of overdose at low dosages.",Avoid,High,Strong
+Primidone,Barbiturates,"High rate of physical dependence, tolerance to sleep benefits, greater risk of overdose at low dosages.",Avoid,High,Strong
+Chlordiazepoxide,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid chlordiazepoxide alone or in combination with amitriptyline or clidinium.,Moderate ,Strong
+Clobazam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Clonazepam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Clorazepate,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Diazepam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Estazolam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Lorazepam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Midazolam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Oxazepam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Temazepam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Triazolam,Benzodiazepines,"The use of benzodiazepines exposes users to risks of abuse, misuse, and addiction. Concomitant use of opioids may result in profound sedation, respiratory depression, coma, and death.
+
+Older adults have increased sensitivity to benzodiazepines and decreased metabolism of long-acting agents; the continued use of benzodiazepines may lead to clinically significant physical dependence. In general, all benzodiazepines increase the risk of cognitive impairment, delirium, falls, fractures, and motor vehicle crashes in older adults.
+
+May be appropriate for seizure disorders, rapid eye movement sleep behavior disorder, benzodiazepine withdrawal, ethanol withdrawal, severe generalized anxiety disorder, and periprocedural anesthesia.",Avoid,Moderate ,Strong
+Eszopiclone,"Nonbenzodiazepine bonzediazepine receptor agonist hypnotics (""Z-drugs"")","Nonbenzodiazepine benzodiazepine receptor agonist hypnotics (“Z-drugs”) have adverse events similar to those of benzodiazepines in older adults (e.g., delirium, falls, fractures, increased emergency room visits/ hospitalizations, motor vehicle crashes); minimal improvement in sleep latency and duration.",Avoid,Moderate ,Strong
+Zaleplon,"Nonbenzodiazepine bonzediazepine receptor agonist hypnotics (""Z-drugs"")","Nonbenzodiazepine benzodiazepine receptor agonist hypnotics (“Z-drugs”) have adverse events similar to those of benzodiazepines in older adults (e.g., delirium, falls, fractures, increased emergency room visits/ hospitalizations, motor vehicle crashes); minimal improvement in sleep latency and duration.",Avoid,Moderate ,Strong
+Zolpidem,"Nonbenzodiazepine bonzediazepine receptor agonist hypnotics (""Z-drugs"")","Nonbenzodiazepine benzodiazepine receptor agonist hypnotics (“Z-drugs”) have adverse events similar to those of benzodiazepines in older adults (e.g., delirium, falls, fractures, increased emergency room visits/ hospitalizations, motor vehicle crashes); minimal improvement in sleep latency and duration.",Avoid,Moderate ,Strong
+Meprobamate,Tranquilizers,High rate of physical dependence; very sedating.,Avoid,Moderate ,Strong
+Ergoloid mesylates,Dehydrogenated ergot alkaloids,Lack of efficacy.,Avoid,High,Strong
+Methyltestosterone,Androgens,Potential for cardiac problems; potential risks in men with prostate cancer.,Avoid unless indicated for confirmed hypogonadism with clinical symptoms.,Moderate ,Weak
+Testosterone,Androgens,Potential for cardiac problems; potential risks in men with prostate cancer.,Avoid unless indicated for confirmed hypogonadism with clinical symptoms.,Moderate ,Weak
+Conjugated estrogens,Estrogens,"Evidence of carcinogenic potential (breast and endometrium); lack of cardioprotective effect and cognitive protection in older women.
+
+For women who start HRT at age 60 and older, the risks of HRT are greater than the benefits, as HRT is linked to a higher risk of heart disease, stroke, blood clots, and dementia.
+
+Evidence indicates that vaginal estrogens for the treatment of vaginal dryness are safe and effective; women with a history of breast cancer who do not respond to nonhormonal therapies are advised to discuss the risks and benefits of low-dose vaginal estrogen (e.g., dosages of estradiol <25 mcg twice weekly) with their healthcare provider.","Do not initiate systemic estrogen (e.g., oral tablets or transdermal patches). Consider deprescribing among older women already using this medication.
+
+Vaginal cream or vaginal tablets: acceptable to use low-dose intravaginal estrogen for the management of dyspareunia, recurrent lower urinary tract infections, and other vaginal symptoms.","Oral and patch: High                              
+
+Vaginal cream or vaginal tablets: Moderate","Oral and patch: Strong
+
+Topical vaginal
+cream or tablets:
+Weak"
+Estradiol ,Estrogens,"Evidence of carcinogenic potential (breast and endometrium); lack of cardioprotective effect and cognitive protection in older women.
+
+For women who start HRT at age 60 and older, the risks of HRT are greater than the benefits, as HRT is linked to a higher risk of heart disease, stroke, blood clots, and dementia.
+
+Evidence indicates that vaginal estrogens for the treatment of vaginal dryness are safe and effective; women with a history of breast cancer who do not respond to nonhormonal therapies are advised to discuss the risks and benefits of low-dose vaginal estrogen (e.g., dosages of estradiol <25 mcg twice weekly) with their healthcare provider.","Do not initiate systemic estrogen (e.g., oral tablets or transdermal patches). Consider deprescribing among older women already using this medication.
+
+Vaginal cream or vaginal tablets: acceptable to use low-dose intravaginal estrogen for the management of dyspareunia, recurrent lower urinary tract infections, and other vaginal symptoms.","Oral and patch: High                              
+
+Vaginal cream or vaginal tablets: Moderate","Oral and patch:
+Strong
+
+Topical vaginal
+cream or tablets:
+Weak"
+Ethinyl estradiol,Estrogens,"Evidence of carcinogenic potential (breast and endometrium); lack of cardioprotective effect and cognitive protection in older women.
+
+For women who start HRT at age 60 and older, the risks of HRT are greater than the benefits, as HRT is linked to a higher risk of heart disease, stroke, blood clots, and dementia.
+
+Evidence indicates that vaginal estrogens for the treatment of vaginal dryness are safe and effective; women with a history of breast cancer who do not respond to nonhormonal therapies are advised to discuss the risks and benefits of low-dose vaginal estrogen (e.g., dosages of estradiol <25 mcg twice weekly) with their healthcare provider.","Do not initiate systemic estrogen (e.g., oral tablets or transdermal patches). Consider deprescribing among older women already using this medication.
+
+Vaginal cream: acceptable to use low-dose intravaginal estrogen for the management of dyspareunia, recurrent lower urinary tract infections, and other vaginal symptoms.","Oral and patch: High
+
+Vaginal cream: Moderate","Oral and patch: Strong
+
+Topical vaginal
+cream: Weak"
+Estropipate,Estrogens,"Evidence of carcinogenic potential (breast and endometrium); lack of cardioprotective effect and cognitive protection in older women.
+
+For women who start HRT at age 60 and older, the risks of HRT are greater than the benefits, as HRT is linked to a higher risk of heart disease, stroke, blood clots, and dementia.
+
+Evidence indicates that vaginal estrogens for the treatment of vaginal dryness are safe and effective; women with a history of breast cancer who do not respond to nonhormonal therapies are advised to discuss the risks and benefits of low-dose vaginal estrogen (e.g., dosages of estradiol <25 mcg twice weekly) with their healthcare provider.","Do not initiate systemic estrogen (e.g., oral tablets or transdermal patches). Consider deprescribing among older women already using this medication.",Oral: High,Oral: Strong
+Estradiol/norethindrone,Estrogens with progestins,"Evidence of carcinogenic potential (breast and endometrium); lack of cardioprotective effect and cognitive protection in older women.
+
+For women who start HRT at age 60 and older, the risks of HRT are greater than the benefits, as HRT is linked to a higher risk of heart disease, stroke, blood clots, and dementia.
+
+Evidence indicates that vaginal estrogens for the treatment of vaginal dryness are safe and effective; women with a history of breast cancer who do not respond to nonhormonal therapies are advised to discuss the risks and benefits of low-dose vaginal estrogen (e.g., dosages of estradiol <25 mcg twice weekly) with their healthcare provider.","Do not initiate systemic estrogen (e.g., oral tablets or transdermal patches). Consider deprescribing among older women already using this medication.",Oral: High,Oral: Strong
+Insulin soluble,Insulin,Higher risk of hypoglycemia without improvement in hyperglycemia management regardless of care setting. Avoid insulin regimens that include only short- or rapid-acting insulin dosed according to current blood glucose levels without concurrent use of basal or long-acting insulin. This recommendation does not apply to regimens that contain basal insulin or long-acting insulin.,"Avoid insulin regimens
+containing only short- or rapid-acting
+insulin dosed according to current
+blood glucose levels without
+concurrent use of basal or long-acting
+insulin.",Moderate ,Strong
+Insulin glulisine,Insulin,Higher risk of hypoglycemia without improvement in hyperglycemia management regardless of care setting. Avoid insulin regimens that include only short- or rapid-acting insulin dosed according to current blood glucose levels without concurrent use of basal or long-acting insulin. This recommendation does not apply to regimens that contain basal insulin or long-acting insulin.,"Avoid insulin regimens
+containing only short- or rapid-acting
+insulin dosed according to current
+blood glucose levels without
+concurrent use of basal or long-acting
+insulin.",Moderate ,Strong
+Insulin aspart,Insulin,Higher risk of hypoglycemia without improvement in hyperglycemia management regardless of care setting. Avoid insulin regimens that include only short- or rapid-acting insulin dosed according to current blood glucose levels without concurrent use of basal or long-acting insulin. This recommendation does not apply to regimens that contain basal insulin or long-acting insulin.,"Avoid insulin regimens
+containing only short- or rapid-acting
+insulin dosed according to current
+blood glucose levels without
+concurrent use of basal or long-acting
+insulin.",Moderate ,Strong
+Insulin lispro,Insulin,Higher risk of hypoglycemia without improvement in hyperglycemia management regardless of care setting. Avoid insulin regimens that include only short- or rapid-acting insulin dosed according to current blood glucose levels without concurrent use of basal or long-acting insulin. This recommendation does not apply to regimens that contain basal insulin or long-acting insulin.,"Avoid insulin regimens
+containing only short- or rapid-acting
+insulin dosed according to current
+blood glucose levels without
+concurrent use of basal or long-acting
+insulin.",Moderate ,Strong
+Gliclazide,Sulfonylureas; Sulphonylureas,"Sulfonylureas have a higher risk of cardiovascular events, all-cause mortality, and hypoglycemia than alternative agents. Sulfonylureas may increase the risk of cardiovascular death and ischemic stroke.
+
+Among sulfonylureas, long-acting agents (e.g., glyburide, glimepiride) confer a higher risk of prolonged hypoglycemia than short-acting agents (e.g., glipizide).","Avoid sulfonylureas as first- or second-line monotherapy or add-on therapy unless there are substantial barriers to the use of safer and more effective agents.
+
+If a sulfonylurea is used, choose short-acting agents (e.g., glipizide) over long-acting agents (e.g., glyburide, glimepiride).","Hypoglycemia: High
+
+CV events and all-cause mortality: Moderate
+
+CV death and ischemic stroke: Low",Strong
+Glimepiride,Sulfonylureas; Sulphonylureas,"Sulfonylureas have a higher risk of cardiovascular events, all-cause mortality, and hypoglycemia than alternative agents. Sulfonylureas may increase the risk of cardiovascular death and ischemic stroke.
+
+Among sulfonylureas, long-acting agents (e.g., glyburide, glimepiride) confer a higher risk of prolonged hypoglycemia than short-acting agents (e.g., glipizide).","Avoid sulfonylureas as first- or second-line monotherapy or add-on therapy unless there are substantial barriers to the use of safer and more effective agents.
+
+If a sulfonylurea is used, choose short-acting agents (e.g., glipizide) over long-acting agents (e.g., glyburide, glimepiride).","Hypoglycemia: High
+
+CV events and all-cause mortality: Moderate
+
+CV death and ischemic stroke: Low",Strong
+Glipizide,Sulfonylureas; Sulphonylureas,"Sulfonylureas have a higher risk of cardiovascular events, all-cause mortality, and hypoglycemia than alternative agents. Sulfonylureas may increase the risk of cardiovascular death and ischemic stroke.
+
+Among sulfonylureas, long-acting agents (e.g., glyburide, glimepiride) confer a higher risk of prolonged hypoglycemia than short-acting agents (e.g., glipizide).","Avoid sulfonylureas as first- or second-line monotherapy or add-on therapy unless there are substantial barriers to the use of safer and more effective agents.
+
+If a sulfonylurea is used, choose short-acting agents (e.g., glipizide) over long-acting agents (e.g., glyburide, glimepiride).","Hypoglycemia: High
+
+CV events and all-cause mortality: Moderate
+
+CV death and ischemic stroke: Low",Strong
+Glyburide,Sulfonylureas; Sulphonylureas,"Sulfonylureas have a higher risk of cardiovascular events, all-cause mortality, and hypoglycemia than alternative agents. Sulfonylureas may increase the risk of cardiovascular death and ischemic stroke.
+
+Among sulfonylureas, long-acting agents (e.g., glyburide, glimepiride) confer a higher risk of prolonged hypoglycemia than short-acting agents (e.g., glipizide).","Avoid sulfonylureas as first- or second-line monotherapy or add-on therapy unless there are substantial barriers to the use of safer and more effective agents.
+
+If a sulfonylurea is used, choose short-acting agents (e.g., glipizide) over long-acting agents (e.g., glyburide, glimepiride).","Hypoglycemia: High
+
+CV events and all-cause mortality: Moderate
+
+CV death and ischemic stroke: Low",Strong
+Glibenclamide,Sulfonylureas; Sulphonylureas,"Sulfonylureas have a higher risk of cardiovascular events, all-cause mortality, and hypoglycemia than alternative agents. Sulfonylureas may increase the risk of cardiovascular death and ischemic stroke.
+
+Among sulfonylureas, long-acting agents (e.g., glibenclamide, glimepiride) confer a higher risk of prolonged hypoglycemia than short-acting agents (e.g., glipizide).","Avoid sulfonylureas as first- or second-line monotherapy or add-on therapy unless there are substantial barriers to the use of safer and more effective agents.
+
+If a sulfonylurea is used, choose short-acting agents (e.g., glipizide) over long-acting agents (e.g., glibenclamide, glimepiride).","Hypoglycemia: High
+
+CV events and all-cause mortality: Moderate
+
+CV death and ischemic stroke: Low",Strong
+Dessicated thyroid,Thyroid products,Concerns about cardiac effects; safer alternatives available.,Avoid,Low,Strong
+Megestrol,Progestins,Minimal effect on weight; increases the risk of thrombotic events and possibly death in older adults.,Avoid,Moderate ,Strong
+Somatropin,Growth hormone,"Impact on body composition is small and associated with edema, arthralgia, carpal tunnel syndrome, gynecomastia, and impaired fasting glucose.","Avoid, except for patients rigorously diagnosed by evidence-based criteria with growth hormone deficiency due to an established etiology.",High,Strong
+Tesamorelin,Growth hormone,"Impact on body composition is small and associated with edema, arthralgia, carpal tunnel syndrome, gynecomastia, and impaired fasting glucose.","Avoid, except for patients rigorously diagnosed by evidence-based criteria with growth hormone deficiency due to an established etiology.",High,Strong
+Mecasermin,Growth hormone,"Impact on body composition is small and associated with edema, arthralgia, carpal tunnel syndrome, gynecomastia, and impaired fasting glucose.","Avoid, except for patients rigorously diagnosed by evidence-based criteria with growth hormone deficiency due to an established etiology.",High,Strong
+Dexlansoprazole,Proton pump inhibitors,"Risk of C. difficile infection, pneumonia, GI malignancies, bone loss, and fractures.","Avoid scheduled use for >8 weeks unless for high-risk patients (e.g., oral corticosteroids or chronic NSAID use), erosive esophagitis, Barrett's esophagitis, pathologic hypersecretory condition, or demonstrated need for maintenance treatment (e.g., because of failure of drug discontinuation trial or H2-receptor antagonists).","C. difficile, bone loss, and fractures: High
+
+Pneumonia and GI malignancies: Moderate",Strong
+Esomeprazole,Proton pump inhibitors,"Risk of C. difficile infection, pneumonia, GI malignancies, bone loss, and fractures.","Avoid scheduled use for >8 weeks unless for high-risk patients (e.g., oral corticosteroids or chronic NSAID use), erosive esophagitis, Barrett's esophagitis, pathologic hypersecretory condition, or demonstrated need for maintenance treatment (e.g., because of failure of drug discontinuation trial or H2-receptor antagonists).","C. difficile, bone loss, and fractures: High
+
+Pneumonia and GI malignancies: Moderate",Strong
+Lansoprazole,Proton pump inhibitors,"Risk of C. difficile infection, pneumonia, GI malignancies, bone loss, and fractures.","Avoid scheduled use for >8 weeks unless for high-risk patients (e.g., oral corticosteroids or chronic NSAID use), erosive esophagitis, Barrett's esophagitis, pathologic hypersecretory condition, or demonstrated need for maintenance treatment (e.g., because of failure of drug discontinuation trial or H2-receptor antagonists).","C. difficile, bone loss, and fractures: High
+
+Pneumonia and GI malignancies: Moderate",Strong
+Omeprazole,Proton pump inhibitors,"Risk of C. difficile infection, pneumonia, GI malignancies, bone loss, and fractures.","Avoid scheduled use for >8 weeks unless for high-risk patients (e.g., oral corticosteroids or chronic NSAID use), erosive esophagitis, Barrett's esophagitis, pathologic hypersecretory condition, or demonstrated need for maintenance treatment (e.g., because of failure of drug discontinuation trial or H2-receptor antagonists).","C. difficile, bone loss, and fractures: High
+
+Pneumonia and GI malignancies: Moderate",Strong
+Pantoprazole,Proton pump inhibitors,"Risk of C. difficile infection, pneumonia, GI malignancies, bone loss, and fractures.","Avoid scheduled use for >8 weeks unless for high-risk patients (e.g., oral corticosteroids or chronic NSAID use), erosive esophagitis, Barrett's esophagitis, pathologic hypersecretory condition, or demonstrated need for maintenance treatment (e.g., because of failure of drug discontinuation trial or H2-receptor antagonists).","C. difficile, bone loss, and fractures: High
+
+Pneumonia and GI malignancies: Moderate",Strong
+Rabeprazole,Proton pump inhibitors,"Risk of C. difficile infection, pneumonia, GI malignancies, bone loss, and fractures.","Avoid scheduled use for >8 weeks unless for high-risk patients (e.g., oral corticosteroids or chronic NSAID use), erosive esophagitis, Barrett's esophagitis, pathologic hypersecretory condition, or demonstrated need for maintenance treatment (e.g., because of failure of drug discontinuation trial or H2-receptor antagonists).","C. difficile, bone loss, and fractures: High
+
+Pneumonia and GI malignancies: Moderate",Strong
+Metoclopramide,"Antiemetics, Dopamine receptor agonists","Can cause extrapyramidal effects, including tardive dyskinesia; the risk may be greater in frail older adults and with prolonged exposure.","Avoid, unless for gastroparesis with a duration of use not to exceed 12 weeks except in rare cases.",Moderate ,Strong
+Atropine ,Antispasmodics,"Highly anticholinergic, uncertain effectiveness.","Avoid, excluding ophthalmic",Moderate ,Strong
+Clidinium/chlordiazepoxide,Antispasmodics,"Highly anticholinergic, uncertain effectiveness.",Avoid,Moderate ,Strong
+Dicyclomine,Antispasmodics,"Highly anticholinergic, uncertain effectiveness.",Avoid,Moderate ,Strong
+Hyoscyamine,Antispasmodics,"Highly anticholinergic, uncertain effectiveness.",Avoid,Moderate ,Strong
+Scopolamine,Antispasmodics,"Highly anticholinergic, uncertain effectiveness.",Avoid,Moderate ,Strong
+Mineral oil,Lubricant laxatives,Potential for aspiration and adverse effects; safer alternatives available.,Avoid oral,Moderate,Strong
+Desmopressin,Hormones,High risk of hyponatremia; safer alternative treatments for nocturia (including non-pharmacologic).,Avoid for treatment of nocturia or nocturnal polyuria.,Moderate,Strong
+Diclofenac,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Diflunisal,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Etodolac,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Flurbiprofen,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Ibuprofen,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Meloxicam,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Nabumetone,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Naproxen,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Oxaprozin,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Piroxicam,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Mefenamic acid,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Ketoprofen,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Sulindac,"Non-steroidal anti-inflammatory drugs, non-COX-2 selective","Increased risk of GI bleeding or peptic ulcer disease in high-risk groups, including those >75 years old or taking oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents; use of proton-pump inhibitor or misoprostol reduces but does not eliminate risk. 
+Upper GI ulcers, gross bleeding, or perforation caused by NSAIDs occur in ~1% of patients treated for 3–6 months and in ~2%–4% of patients treated for 1 year; these trends continue with longer duration of use. Also can increase blood pressure and induce kidney injury. Risks are dose-related.","Avoid chronic use unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).
+
+Avoid short-term scheduled use in combination with oral or parenteral corticosteroids, anticoagulants, or antiplatelet agents unless other alternatives are not effective and the patient can take a gastroprotective agent
+(proton-pump inhibitor or misoprostol).",Moderate,Strong
+Meperidine,Opioids ,"Oral analgesic not effective in dosages commonly used; may have a higher risk of neurotoxicity, including delirium, than other opioids; safer alternatives available.",Avoid,Moderate,Strong
+Pethidine,Opioids ,"Oral analgesic not effective in dosages commonly used; may have a higher risk of neurotoxicity, including delirium, than other opioids; safer alternatives available.",Avoid,Moderate,Strong
+Carisoprodol,Skeletal muscle relaxants,"Muscle relaxants typically used to treat musculoskeletal complaints are poorly tolerated by older adults due to anticholinergic adverse effects, sedation, and increased risk of fractures; effectiveness at dosages tolerated by older adults is questionable.
+
+This criterion does not apply to skeletal muscle relaxants typically used for the management of spasticity (i.e., baclofen and tizanidine) although these drugs can also cause substantial adverse effects.",Avoid,Moderate,Strong
+Chlorzoxazone,Skeletal muscle relaxants,"Muscle relaxants typically used to treat musculoskeletal complaints are poorly tolerated by older adults due to anticholinergic adverse effects, sedation, and increased risk of fractures; effectiveness at dosages tolerated by older adults is questionable.
+
+This criterion does not apply to skeletal muscle relaxants typically used for the management of spasticity (i.e., baclofen and tizanidine) although these drugs can also cause substantial adverse effects.",Avoid,Moderate,Strong
+Cyclobenzaprine,Skeletal muscle relaxants,"Muscle relaxants typically used to treat musculoskeletal complaints are poorly tolerated by older adults due to anticholinergic adverse effects, sedation, and increased risk of fractures; effectiveness at dosages tolerated by older adults is questionable.
+
+This criterion does not apply to skeletal muscle relaxants typically used for the management of spasticity (i.e., baclofen and tizanidine) although these drugs can also cause substantial adverse effects.",Avoid,Moderate,Strong
+Metaxalone,Skeletal muscle relaxants,"Muscle relaxants typically used to treat musculoskeletal complaints are poorly tolerated by older adults due to anticholinergic adverse effects, sedation, and increased risk of fractures; effectiveness at dosages tolerated by older adults is questionable.
+
+This criterion does not apply to skeletal muscle relaxants typically used for the management of spasticity (i.e., baclofen and tizanidine) although these drugs can also cause substantial adverse effects.",Avoid,Moderate,Strong
+Methocarbamol,Skeletal muscle relaxants,"Muscle relaxants typically used to treat musculoskeletal complaints are poorly tolerated by older adults due to anticholinergic adverse effects, sedation, and increased risk of fractures; effectiveness at dosages tolerated by older adults is questionable.
+
+This criterion does not apply to skeletal muscle relaxants typically used for the management of spasticity (i.e., baclofen and tizanidine) although these drugs can also cause substantial adverse effects.",Avoid,Moderate,Strong
+Orphenadrine,Skeletal muscle relaxants,"Muscle relaxants typically used to treat musculoskeletal complaints are poorly tolerated by older adults due to anticholinergic adverse effects, sedation, and increased risk of fractures; effectiveness at dosages tolerated by older adults is questionable.
+
+This criterion does not apply to skeletal muscle relaxants typically used for the management of spasticity (i.e., baclofen and tizanidine) although these drugs can also cause substantial adverse effects.",Avoid,Moderate,Strong
