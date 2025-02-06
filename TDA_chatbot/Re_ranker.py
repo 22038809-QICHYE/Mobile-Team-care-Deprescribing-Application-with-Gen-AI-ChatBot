@@ -2,7 +2,11 @@
 from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from Retrieval import Retriever
 from tabulate import tabulate
-
+# Traditional Scoring Techniques
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from rank_bm25 import BM25Okapi
 
 
 # Neural Rerankers
@@ -197,7 +201,9 @@ def test_with_aggregated_reranking():
     reranker = CrossEncoderReRanker()
 
     # Define the test query
-    query_text = "Age: 78, Gender: male, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
+    #query_text = "Age: 78, Gender: male, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
+
+    query_text = "Age: 92, Gender: male, Medication: Metoprolol (OD 100mg), Warfarin (OD 5mg), Amiodarone (OD 800mg), Simvastatin (OD 10mg), Condition: Obesity in adults, Iron deficiency anaemia, Mixed hyperlipidaemia, Osteoporosis, Congestive heart failure, Acute myocardial infarction, Intermediate hyperglycaemia"
 
     # Retrieve documents and generated queries using the retriever
     print("\n--- Retrieving Documents ---")
@@ -287,58 +293,79 @@ def test_ensemble_retriever():
 #===============
 
 
+
 # Traditional Scoring Techniques
 class BM25ReRanker:
     def __init__(self):
         """
-        Initialize the BM25 re-ranker with documents stored in ChromaDB.
-
-        :param chroma_manager: An instance of ChromaManager.
-        :param collection_name: Optional, name of the collection to use (defaults to active collection).
+        Initialize the BM25 re-ranker.
         """
-        from rank_bm25 import BM25Okapi
-        from Chroma import ChromaManager
-        # Use the specified collection or default to the active collection
-        self.chroma_manager = ChromaManager()
+        nltk.download('punkt') #only need to download once
+        nltk.download('stopwords') #only need to download once
+        self.bm25 = None  # Will be initialized dynamically
 
-        # Fetch documents from ChromaDB
-        documents = self.chroma_manager.list_documents()  # Get documents from the active collection
-        
-        if documents is None or len(documents) == 0:
-            print("No documents found in the current collection.")
-            self.tokenized_docs = []
-            return
-        
-        # Extracting the text from the documents
-        self.document_texts = [doc["text"] for doc in documents]
-
-        # Tokenize the documents into word lists
-        self.tokenized_docs = [doc.split() for doc in self.document_texts]
-        
-        # Initialize BM25 model with tokenized documents
-        self.bm25 = BM25Okapi(self.tokenized_docs)
-
-    def rerank_documents(self, query, top_n=3):
+    def tokenize_text(self, text):
         """
-        Rerank documents based on BM25 scores for a given query.
+        Tokenize text by:
+        - Lowercasing
+        - Removing stopwords
+        - Keeping only alphanumeric words
+
+        :param text: The document or query text.
+        :return: Tokenized word list.
+        """
+        stop_words = set(stopwords.words("english"))
+        return [
+            word.lower() for word in word_tokenize(text)
+            if word.isalnum() and word.lower() not in stop_words
+        ]
+
+    def rerank_documents(self, query, retrieved_docs, top_n=10):
+        """
+        Rerank retrieved documents based on BM25 scores for a given query.
 
         :param query: The query to search for in the documents.
-        :param top_n: Number of top-ranked documents to return.
-        :return: List of tuples containing the document id and its BM25 score.
+        :param retrieved_docs: List of retrieved document objects with 'page_content' and 'metadata'.
+        :param top_n: Number of top-ranked documents to return (default: 10).
+        :return: List of dictionaries with document id, BM25 score, and text.
         """
-        if not self.tokenized_docs:
+        if not retrieved_docs:
+            print("No retrieved documents provided for re-ranking.")
             return []
 
-        # Tokenize the query
-        tokenized_query = query.split()
+        # Debugging - Print retrieved document format
+        # print(f"DEBUG: Retrieved Documents Type: {type(retrieved_docs)}")
+        # print(f"DEBUG: Sample Document: {retrieved_docs[0] if retrieved_docs else 'No Documents'}")
 
-        # Calculate BM25 scores for the query
+        # Extract text and IDs correctly
+        try:
+            get_text = lambda doc: doc.page_content  # Text content
+            get_id = lambda doc: doc.metadata.get("id", "unknown")  # Document ID from metadata
+        except AttributeError:
+            print("Error: Retrieved documents are not in the expected format.")
+            return []
+
+        # Extract and tokenize document texts
+        document_texts = [get_text(doc) for doc in retrieved_docs]
+        tokenized_docs = [self.tokenize_text(text) for text in document_texts]
+
+        # Initialize BM25 model with optimized parameters
+        self.bm25 = BM25Okapi(tokenized_docs, k1=1.5, b=0.75)
+
+        # Tokenize the query
+        tokenized_query = self.tokenize_text(query)
+
+        # Compute BM25 scores for the query
         scores = self.bm25.get_scores(tokenized_query)
 
-        # Combine scores with document IDs
+        # Build ranked document list
         ranked_documents = [
-            {"id": doc["id"], "score": score, "text": doc["text"]}
-            for doc, score in zip(self.chroma_manager.list_documents(), scores)
+            {
+                "id": get_id(doc),
+                "score": score,
+                "text": get_text(doc),
+            }
+            for doc, score in zip(retrieved_docs, scores)
         ]
 
         # Sort documents by BM25 score in descending order and return top_n
@@ -346,30 +373,52 @@ class BM25ReRanker:
 
         return ranked_documents[:top_n]
 
-
 #=== Testing ===
 def test_BM25_ReRanker():
-    # Initialize BM25 re-ranker with ChromaManager instance
+    from Retrieval import Retriever
+
+    # Initialize the Retriever and BM25 ReRanker
+    retriever = Retriever()
     bm25_reranker = BM25ReRanker()
 
     # Example query
-    query = "Age: 78, Gender: male, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
+    #query = "Age: 78, Gender: male, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
 
-    # Get top 3 ranked documents
-    top_ranked_docs = bm25_reranker.rerank_documents(query, top_n=3)
+    query = "Age: 92, Gender: male, Medication: Metoprolol (OD 100mg), Warfarin (OD 5mg), Amiodarone (OD 800mg), Simvastatin (OD 10mg), Condition: Obesity in adults, Iron deficiency anaemia, Mixed hyperlipidaemia, Osteoporosis, Congestive heart failure, Acute myocardial infarction, Intermediate hyperglycaemia"
+
+    # Retrieve documents and generated queries using the retriever
+    print("\n--- Retrieving Documents ---")
+    retrieved_docs, generated_queries = retriever.retrieve_multi_query(query)
+    # Display the generated queries
+    print("\nGenerated Queries:")
+    for GEN_query in generated_queries:
+        print(GEN_query)
+
+    if not retrieved_docs:
+        print("No documents retrieved. Cannot proceed with re-ranking.")
+        return "No documents retrieved."
+
+    # Display the retrieved documents
+    print(f"\nRetrieved {len(retrieved_docs)} documents:")
+    print(retriever.format_results(retrieved_docs))
+
+    # Re-rank the retrieved documents across all queries
+    print("\n--- Re-ranking Documents ---")
+
+    # Get top 10 ranked documents
+    top_ranked_docs = bm25_reranker.rerank_documents(query, retrieved_docs, top_n=10)
 
     # Display top ranked documents
+    print("\nTop 10 Ranked Documents:")
     for doc in top_ranked_docs:
         print(f"Document ID: {doc['id']} | Score: {doc['score']} | Text: {doc['text'][:100]}...")
-
-
+#===============
 
 if __name__ == "__main__":
     try:
-        test_BM25_ReRanker()
-
+        test_with_aggregated_reranking()
     except Exception as e:
         print(f"\nAn error occurred during testing: {e}")
-
     finally:
         print("\nTesting complete.")
+
