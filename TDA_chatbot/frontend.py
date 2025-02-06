@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, Da
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
-from inte6cz import generate, setupModel, retieve_patient_info, validate, check_score, decision_model, get_info, violation_warning
+from GenEngine import generate, setupModel, retieve_patient_info, validate, check_score, decision_model, get_info, violation_warning
 from promptguard import PromptGuard
 
 # Hide Hamburger Menu and Streamlit Header
