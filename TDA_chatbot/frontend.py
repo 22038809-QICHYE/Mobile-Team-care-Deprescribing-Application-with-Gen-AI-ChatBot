@@ -105,6 +105,12 @@ def load_css():
     with open(css_path, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# Default model setup
+if "model_name" not in st.session_state or st.session_state["model_name"] is None:
+    st.session_state["model_name"] = "gpt"
+
+# Initialize chosen model
+chosen_model = setupModel(st.session_state["model_name"])
 
 # Load custom CSS
 load_css()
