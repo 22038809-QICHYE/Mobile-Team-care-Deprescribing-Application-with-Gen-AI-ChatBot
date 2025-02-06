@@ -2,6 +2,7 @@ from Retrieval import Retriever
 from Re_ranker import CrossEncoderReRanker
 from tabulate import tabulate
 
+
 class Augmentation:
     def __init__(self):
         """Initializes the Query Augmentor."""
@@ -30,6 +31,34 @@ class Augmentation:
         if not combined_context:
             return {"Query": user_query.strip(), "Content": "No relevant document content available."}
 
+
+        # Create the augmented query data
+        augmented_query_data = {
+            "Query": user_query.strip(),
+            "Content": combined_context
+        }
+
+        return augmented_query_data
+
+    #only for BM25 rerank
+    def augment_query_with_document2(self, user_query, documents):
+        """
+        Augments the user query with the content of all re-ranked documents.
+
+        :param user_query: The original user query.
+        :param documents: A list of re-ranked documents, each containing 'text' (not 'page_content').
+        :return: A dictionary with the query and combined document contexts.
+        """
+        if not user_query.strip():
+            raise ValueError("User query is empty. Please provide a valid query.")
+
+        # Extract and combine content from all documents (BM25 uses 'text' instead of 'page_content')
+        combined_context = "\n\n".join(
+            doc["text"].strip() for doc in documents if "text" in doc
+        )
+
+        if not combined_context:
+            return {"Query": user_query.strip(), "Content": "No relevant document content available."}
 
         # Create the augmented query data
         augmented_query_data = {
