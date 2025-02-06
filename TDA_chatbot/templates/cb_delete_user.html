@@ -9,8 +9,8 @@
         <h2>Welcome, {{ username }}</h2>
         <p>Start a new chatbot session below or view past conversations.</p>
         <a href="/chat" class="btn btn-success">Start New Chatbot</a>
-        <a href="/create_admin" class="btn btn-success">Add User</a>
-        <a href="/cb_admin_view_history" class="btn btn-primary">Chat History Overview</a>
+        <a href="/create_user" class="btn btn-success">Add User</a>
+        <a href="/cb_user_view_history" class="btn btn-primary">Chat History Overview</a>
         <a href="/delete_user" class="btn btn-danger">Delete User</a>
         <a href="/logout" class="btn btn-danger">Logout</a>
     </div>
@@ -40,7 +40,7 @@
                 <td>{{ user_info.user.email }}</td>
                 <td>{{ user_info.session_count }}</td>
                 <td>
-                    <a href="{{ url_for('delete_user', user_id=user_info.user.admin_id) }}" class="btn btn-danger">Delete</a>
+                    <a href="{{ url_for('delete_user', user_id=user_info.user.user_id) }}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             {% else %}
