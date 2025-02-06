@@ -1,18 +1,21 @@
 import os
 from dotenv import load_dotenv
 from tabulate import tabulate
-
+# Semantic similarity-based cache
 from langchain_community.cache import RedisSemanticCache
 from langchain.globals import set_llm_cache
 from langchain.schema import Generation
-
 from Embedding_Model import PubMedBERT
+# Key-Value Store
+import redis
+import json
+
 from Retrieval import Retriever
 from Re_ranker import CrossEncoderReRanker
 from Augment import Augmentation
 
 
-
+# Semantic similarity-based cache
 class RedisSemanticCacheManager:
     def __init__(self):
         """
@@ -24,7 +27,7 @@ class RedisSemanticCacheManager:
         # Load configuration values
         self.redis_url = os.getenv("REDIS_URL")
         self.embeddings = PubMedBERT()
-        self.score_threshold = 0.8
+        self.score_threshold = 1
 
         # Initialize RedisSemanticCache
         self.cache = RedisSemanticCache(
@@ -34,7 +37,7 @@ class RedisSemanticCacheManager:
         )
         
         # Set the cache globally for LangChain compatibility
-        set_llm_cache(self.cache)
+        # set_llm_cache(self.cache)
 
     def lookup(self, query, llm_string):
         """
@@ -47,8 +50,10 @@ class RedisSemanticCacheManager:
         try:
             cached_result = self.cache.lookup(query, llm_string)
             if cached_result:
-                print(f"Cache hit for query: {query}")
-                return cached_result[0].text  # Assuming the cached result is a list of Generations
+                for cached_prompt in cached_result:
+                    cached_prompt.text == query
+                    print(f"Cache hit for query: {query}")
+                    return cached_result[0].text  # Assuming the cached result is a list of Generations
             print(f"Cache miss for query: {query}")
             return None
         except Exception as e:
@@ -104,50 +109,139 @@ class RedisSemanticCacheManager:
         except Exception as e:
             print(f"Error displaying cached document: {e}")
 
-
-def test_script():
-    retriever = Retriever()
+def test_script1():
+    retriever = Retriever() 
     reranker = CrossEncoderReRanker()
     augmentor = Augmentation()
     cache_manager = RedisSemanticCacheManager()
 
-    user_query = "What is an example of document retrieval?"
-    llm_string = "gpt-4o"
+    user_query = "Age: 78, Gender: male, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
 
-    # Cache lookup
-    print("Checking cache...")
+    llm_string = "gpt-4"
+
     try:
-        cache_document = cache_manager.lookup(user_query, llm_string)
-        if cache_document:
-            print(f"Cache hit! Cached document found.")
-            cache_manager.display_cached_document(user_query, cache_document)
-            cache_manager.clear_cache(llm_string)
-            return cache_document
-    except Exception as e:
-        print(f"Cache lookup error: {e}")
-        return
+        # Step 1: Check cache
+        cached_document = cache_manager.lookup(user_query, llm_string)
+        if cached_document:
+            print(f"Cache hit! Cached document:\n{cached_document}")
+            return cached_document
 
-    # If no cache hit, proceed with retrieval, re-ranking, and augmentation
-    try:
-        print("\nRetrieving documents...")
-        retrieved_documents = retriever.retrieve_similarity_score_threshold(user_query)
-        if not retrieved_documents:
-            print("No documents retrieved.")
-            return "No relevant documents found."
+        # Step 2: Retrieve documents and generated queries using the retriever
+        print("\n--- Retrieving Documents ---")
+        retrieved_docs, generated_queries = retriever.retrieve_multi_query(user_query)
+        if not retrieved_docs:
+            print("No documents retrieved. Cannot proceed with re-ranking.")
+            return
 
-        print("\nRe-ranking documents...")
-        reranked_documents = reranker.re_rank_documents(user_query, retrieved_documents)
-        if not reranked_documents:
-            print("Re-ranking failed.")
-            return "Re-ranking failed."
+        # Display the retrieved documents
+        print(f"\nRetrieved {len(retrieved_docs)} documents:")
+        print(retriever.format_results(retrieved_docs))
 
-        print("\nAugmenting query...")
+        # Display the generated queries
+        print("\nGenerated Queries:")
+        for GEN_query in generated_queries:
+            print(GEN_query)
+
+        # Step 3: Re-rank the retrieved documents across all queries
+        print("\n--- Re-ranking Documents Across Queries ---")
+        reranked_documents = reranker.re_rank_documents_across_queries(generated_queries, retrieved_docs)
+
+        # Display the re-ranked results
+        print("\nRe-ranked Documents Across Queries:")
+        print(reranker.format_results_multi_query(reranked_documents))
+
+        # Step 4: Augment query with top document
         augmented_query_data = augmentor.augment_query_with_document(user_query, reranked_documents)
-        formatted_document = augmentor.format_augmented_query(augmented_query_data)
-        print(f"Augment:\n{formatted_document}\n")
-
-        # Update the cache
+                
+        # Step 5: Update cache
         cache_manager.update(user_query, augmented_query_data, llm_string)
+    
+        return augmented_query_data
+    
+    except Exception as e:
+        print(f"Error during testing: {e}")
+        return "Process failed."
+
+
+# Key-Value Store cache
+class ExactMatchRedisCache:
+    def __init__(self):
+        load_dotenv()
+        self.redis_url = os.getenv("REDIS_URL")
+        self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
+
+    def lookup(self, query):
+        """Retrieve the exact cached document if available."""
+        cached_result = self.redis_client.get(query.strip().lower())  # Normalize for consistency
+        if cached_result:
+            print(f"Cache hit for query: {query}")
+            return cached_result
+        print(f"Cache miss for query: {query}")
+        return None
+
+    def update(self, query, document, ttl=3600):  # Default TTL = 1 hour
+        """Store query and document pair in cache with TTL."""
+        if isinstance(document, dict):  
+            document_content = document.get("Content", "").strip()
+        else:
+            document_content = str(document).strip()  # Ensure it's a string
+
+        if document_content:  # Ensure it's not empty
+            cache_entry = json.dumps({"query": query.strip(), "document": document_content})  # Convert to JSON
+            self.redis_client.setex(query.strip().lower(), ttl, cache_entry)  # Store with TTL
+            print(f"Updated cache with exact query match: {query} (Expires in {ttl} seconds)")
+        else:
+            print("No valid content found to update the cache.")
+
+    def clear_cache(self):
+        """Clear the entire cache."""
+        self.redis_client.flushdb()
+        print("Cache cleared.")
+
+def test_script2():
+    retriever = Retriever() 
+    reranker = CrossEncoderReRanker()
+    augmentor = Augmentation()
+    cache_manager = ExactMatchRedisCache()
+
+    query = "Age: 78, Gender: female, Medications: Digoxin (OD 0.125mg), Fluticasone (BID 2 puff), Warfarin (OD 5), Conditions: Essential hypertension (BA00), Iron deficiency anaemia (3A00), Mixed hyperlipidaemia (5C80.2)"
+    
+    try:
+        # Step 1: Check cache
+        cached_document = cache_manager.lookup(query)
+        if cached_document:
+            print(f"Cache hit! Cached document:\n{cached_document}")
+            return cached_document
+
+        # Step 2: Retrieve documents and generated queries using the retriever
+        print("\n--- Retrieving Documents ---")
+        retrieved_docs, generated_queries = retriever.retrieve_multi_query(query)
+        if not retrieved_docs:
+            print("No documents retrieved. Cannot proceed with re-ranking.")
+            return
+
+        # Display the retrieved documents
+        print(f"\nRetrieved {len(retrieved_docs)} documents:")
+        print(retriever.format_results(retrieved_docs))
+
+        # Display the generated queries
+        print("\nGenerated Queries:")
+        for GEN_query in generated_queries:
+            print(GEN_query)
+
+        # Step 3: Re-rank the retrieved documents across all queries
+        print("\n--- Re-ranking Documents Across Queries ---")
+        reranked_documents = reranker.re_rank_documents_across_queries(generated_queries, retrieved_docs)
+
+        # Display the re-ranked results
+        print("\nRe-ranked Documents Across Queries:")
+        print(reranker.format_results_multi_query(reranked_documents))
+
+        # Step 4: Augment query with top document
+        augmented_query_data = augmentor.augment_query_with_document(query, reranked_documents)
+            
+        # Step 5: Update cache
+        cache_manager.update(query, augmented_query_data)
  
         return augmented_query_data
     except Exception as e:
@@ -155,10 +249,9 @@ def test_script():
         return "Process failed."
 
 
-
 if __name__ == "__main__":
     try:
-        test_script()
+        test_script2()
     except Exception as e:
         print(f"\nAn error occurred during the test: {e}")
     finally:
