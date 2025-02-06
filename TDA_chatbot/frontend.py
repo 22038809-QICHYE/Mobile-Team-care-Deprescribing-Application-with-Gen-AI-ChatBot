@@ -1,10 +1,12 @@
 import os
 import time
 import streamlit as st
+import requests
 from sqlalchemy import create_engine, Column, Integer, String, Text, Boolean, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
+from streamlit_js_eval import streamlit_js_eval
 from GenEngine import generate, setupModel, retieve_patient_info, validate, check_score, decision_model, get_info, violation_warning
 from promptguard import PromptGuard
 
@@ -69,16 +71,41 @@ class Message(Base):
     role = Column(String, nullable=False)
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.utcnow)
-    feedback = Column(Integer, nullable=True)  # Changed to Integer for star rating
+    feedback = Column(Integer, nullable=True)
     session = relationship("Session", back_populates="messages")
-
-
 
 Base.metadata.create_all(bind=engine)
 
+# Function to update the end_time when the window closes
+def update_end_time():
+    if st.session_state.get("session_id"):
+        db_session = SessionLocal()
+        session_instance = db_session.query(Session).filter_by(session_id=st.session_state["session_id"]).first()
+        if session_instance:  # Make sure session exists
+            session_instance.end_time = datetime.utcnow()
+            db_session.commit()
+        db_session.close()
+
+# Inject JavaScript to detect page close and update the end_time
+if st.session_state.get("session_id"): 
+    js_code = f"""
+    window.addEventListener('beforeunload', function () {{
+        navigator.sendBeacon('/update_end_time?session_id={st.session_state["session_id"]}');
+    }});
+    """
+    st.markdown(f"<script>{js_code}</script>", unsafe_allow_html=True)
+
+def handle_update_end_time():
+    if st.session_state.get("session_id"):
+        update_end_time()
+
+if st.session_state.get("session_id"):
+    handle_update_end_time()
+
+
 def generate_response_with_spinner():
     with st.spinner("Generating response for you..."):
-        time.sleep(3)  # Simulate processing time
+        time.sleep(3)  
     return "Here is the AI-generated response."
 
 # Function to generate a default session name
@@ -170,7 +197,7 @@ if not st.session_state["read_only"]:
                 if current_session:
                     current_session.session_name = new_session_name
                     db_session.commit()
-                    st.session_state["session_name"] = new_session_name  # Update session state
+                    st.session_state["session_name"] = new_session_name  
                     st.sidebar.success("Session name updated!")
     
                 db_session.close()
@@ -238,20 +265,19 @@ if not st.session_state["read_only"]:
                 print("Response: ", response)
             else:
                 st.session_state["current_info"] = retieve_patient_info(prompt, model, st.session_state["current_info"])
-                print("Current Info:", st.session_state["current_info"])  # Debugging: Log current info
+                print("Current Info:", st.session_state["current_info"])  
 
                 validation = validate(decision_model, st.session_state["current_info"])
-                print("Validation Result:", validation)  # Debugging: Log validation result
+                print("Validation Result:", validation)  
 
                 if check_score(validation):
                     response = generate(st.session_state["current_info"], model)
-                    print("Recommendation:", response)  # Debugging: Log AI recommendation
-                    st.session_state["current_info"] = "" # Corn
+                    print("Recommendation:", response)  
+                    st.session_state["current_info"] = "" 
                 else:
                     response = get_info(st.session_state["current_info"],prompt, model)
-                    print("Response:", response)  # Debugging: Log AI response
+                    print("Response:", response)  
 
-        # Display the response after the spinner is done
         st.markdown(
             f"""
             <div class="chat-row">
@@ -262,32 +288,26 @@ if not st.session_state["read_only"]:
             unsafe_allow_html=True,
         )
 
-        # Save the AI response in session history
         st.session_state["messages"].append({"role": "assistant", "content": response})
         save_message("assistant", response)
 
-# Unique key for feedback based on number of messages
 feedback_key = f"feedback_{len(st.session_state['messages'])}"
 
-# Feedback on AI response (Always visible)
 selected = st.feedback("stars", key=feedback_key)
 
 if selected is not None:
     try:
-        feedback_value = int(selected) + 1  # Convert to integer (stars are 0-indexed)
+        feedback_value = int(selected) + 1  
         
-        # Display different messages based on rating
         if feedback_value <= 3:
             st.markdown("We'll do our best to improve responses")
         else:
             st.markdown("We are happy to be of service to you!")
             
-        print(f"User Feedback: {feedback_value} stars")  # Debugging: Ensure feedback is captured
+        print(f"User Feedback: {feedback_value} stars")  
 
-        # Open a new database session
         db_session = SessionLocal()
 
-        # Fetch the last AI-generated message for the session
         last_ai_message = (
             db_session.query(Message)
             .filter_by(session_id=st.session_state["session_id"], role="assistant")
@@ -295,21 +315,20 @@ if selected is not None:
             .first()
         )
 
-        # Debugging: Check if a message was found
         if last_ai_message:
             print("Feedback saved successfully!")
-            print(f"Found AI message with ID: {last_ai_message.message_id}")  # Debugging
-            last_ai_message.feedback = feedback_value  # Update feedback column
+            print(f"Found AI message with ID: {last_ai_message.message_id}")  
+            last_ai_message.feedback = feedback_value  
             db_session.commit()
         else:
-            print("No AI message found.")  # Debugging
+            print("No AI message found.")  
             st.error("No AI response found to attach feedback.")
 
         db_session.close()
 
     except Exception as e:
         st.error(f"Error saving feedback: {e}")
-        print(f"Error saving feedback: {e}")  # Debugging
+        print(f"Error saving feedback: {e}")  
 
 # Read-only mode warning if applicable
 if st.session_state["read_only"]:
