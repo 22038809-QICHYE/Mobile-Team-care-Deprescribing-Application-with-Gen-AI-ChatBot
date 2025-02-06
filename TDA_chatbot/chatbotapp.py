@@ -21,24 +21,24 @@ Base = declarative_base()
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
-class Admin(Base):
-    __tablename__ = "admin"
-    admin_id = Column(Integer, primary_key=True, autoincrement=True)
+class User(Base):
+    __tablename__ = "user"
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, nullable=False)
     password = Column(String, nullable=False)
-    sessions = relationship("Session", back_populates="admin")
+    sessions = relationship("Session", back_populates="user")
     is_admin = Column(Boolean, default=False)
 
 class Session(Base):
     __tablename__ = "sessions"
     session_id = Column(Integer, primary_key=True, autoincrement=True)
-    admin_id = Column(Integer, ForeignKey("admin.admin_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
     start_time = Column(DateTime, default=datetime.utcnow)
     end_time = Column(DateTime)
     session_name = Column(String, default="Untitled Session")
     messages = relationship("Message", back_populates="session")
-    admin = relationship("Admin", back_populates="sessions")
+    user = relationship("User", back_populates="sessions")
 
 class Message(Base):
     __tablename__ = "messages"
@@ -68,15 +68,15 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         db_session = SessionLocal()
-        admin = db_session.query(Admin).filter_by(username=username).first()
+        user = db_session.query(User).filter_by(username=username).first()
 
-        if admin and admin.password == password:  # Plain text comparison
-            session["admin_id"] = admin.admin_id
-            session["username"] = admin.username
+        if user and user.password == password:  # Plain text comparison
+            session["user_id"] = user.user_id
+            session["username"] = user.username
             db_session.close()
-            # Redirect admins to the admin-specific history page
-            if admin.is_admin:
-                return redirect(url_for("cb_admin_view_history"))
+            # Redirect users to the user-specific history page
+            if user.is_admin:
+                return redirect(url_for("cb_user_view_history"))
             return redirect(url_for("success"))
         else:
             db_session.close()
@@ -93,20 +93,20 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         db_session = SessionLocal()
-        if db_session.query(Admin).filter_by(username=username).first():
+        if db_session.query(User).filter_by(username=username).first():
             db_session.close()
             error = "Username already exists."
             flash("Username already exists.")
             return render_template("cb_register.html", error=error)
-        # Create a new admin with is_admin set to False
-        new_admin = Admin(
+        # Create a new user with is_admin set to False
+        new_user = User(
             username=username,
             email=email,
             password=password,
             is_admin=False  # Explicitly set is_admin to False
         )
         
-        db_session.add(new_admin)
+        db_session.add(new_user)
         db_session.commit()
         db_session.close()
         
@@ -117,17 +117,17 @@ def register():
 
 
 # CREATE USER
-@chatbotapp.route("/create_admin", methods=["GET", "POST"])
-def create_admin():
-    if "admin_id" not in session:
+@chatbotapp.route("/create_user", methods=["GET", "POST"])
+def create_user():
+    if "user_id" not in session:
         return redirect(url_for("home"))
     
-    # Retrieve the logged-in admin
+    # Retrieve the logged-in user
     db_session = SessionLocal()
-    admin = db_session.query(Admin).filter_by(admin_id=session["admin_id"]).first()
-    if not admin or not admin.is_admin:
+    user = db_session.query(User).filter_by(user_id=session["user_id"]).first()
+    if not user or not user.is_admin:
         db_session.close()
-        flash("Unauthorized access. Only admins can create new user/admin.", "danger")
+        flash("Unauthorized access. Only users can create new user/user.", "danger")
         return redirect(url_for("home"))
 
     if request.method == "POST":
@@ -136,44 +136,44 @@ def create_admin():
         password = request.form.get("password")
 
         # Check if the username already exists
-        if db_session.query(Admin).filter_by(username=username).first():
+        if db_session.query(User).filter_by(username=username).first():
             db_session.close()
             error = "Username already exists."
-            return render_template("cb_create_admin.html", error=error)
+            return render_template("cb_create_user.html", error=error)
 
-        # Create the new admin/user
-        new_admin = Admin(
+        # Create the new user
+        new_user = User(
             username=username,
             email=email,
             password=password,
             is_admin= False # Set based on checkbox value
         )
-        db_session.add(new_admin)
+        db_session.add(new_user)
         db_session.commit()
         db_session.close()
 
         success = f"User '{username}' created successfully."
-        return render_template("cb_create_admin.html", success=success)
+        return render_template("cb_create_user.html", success=success)
 
     db_session.close()
-    return render_template("cb_create_admin.html", username=admin.username)
+    return render_template("cb_create_user.html", username=user.username)
 
 
 # ADMIN DASHBOARD
-@chatbotapp.route("/cb_admin_view_history", methods=["GET", "POST"])
-def cb_admin_view_history():
+@chatbotapp.route("/cb_user_view_history", methods=["GET", "POST"])
+def cb_user_view_history():
     # Redirect to login if the user is not authenticated
-    if "admin_id" not in session:
-        flash("You must be logged in as an admin to view chat history.", "warning")
+    if "user_id" not in session:
+        flash("You must be logged in as an user to view chat history.", "warning")
         return redirect(url_for("login"))
 
     db_session = SessionLocal()
 
-    # Retrieve the logged-in admin
-    admin = db_session.query(Admin).filter_by(admin_id=session["admin_id"]).first()
-    if not admin or not admin.is_admin:
+    # Retrieve the logged-in user
+    user = db_session.query(User).filter_by(user_id=session["user_id"]).first()
+    if not user or not user.is_admin:
         db_session.close()
-        flash("Unauthorized access. Only admins can view chat history.", "danger")
+        flash("Unauthorized access. Only users can view chat history.", "danger")
         return redirect(url_for("home"))
 
     # Search and Pagination
@@ -182,14 +182,14 @@ def cb_admin_view_history():
     per_page = 10
     offset = (page - 1) * per_page
 
-    query = db_session.query(Session).join(Admin).options(joinedload(Session.admin))
+    query = db_session.query(Session).join(User).options(joinedload(Session.user))
 
     # Apply search filter
     if search_query:
-        query = query.filter(Admin.username.ilike(f"%{search_query}%"))  # Search by username
+        query = query.filter(User.username.ilike(f"%{search_query}%"))  # Search by username
 
-    # Sort alphabetically by admin username
-    query = query.order_by(Admin.username.asc())
+    # Sort alphabetically by user username
+    query = query.order_by(User.username.asc())
 
     # Total number of sessions for pagination
     total_sessions = query.count()
@@ -201,39 +201,39 @@ def cb_admin_view_history():
 
     # Render the template with filtered results and pagination
     return render_template(
-        "cb_admin_view_history.html",
-        username=admin.username,
-        is_admin=admin.is_admin,
+        "cb_user_view_history.html",
+        username=user.username,
+        is_admin=user.is_admin,
         history=history,
         search_query=search_query,
         page=page,
         total_pages=(total_sessions + per_page - 1) // per_page,
-        current_admin_id=admin.admin_id,  # Pass the logged-in admin's ID to template
+        current_user_id=user.user_id,  # Pass the logged-in user's ID to template
     )
 
 
 # USER DASHBOARD
 @chatbotapp.route("/view_history")
 def view_history():
-    if "admin_id" not in session:
-        flash("You must be logged in as a user or admin to view chat history.", "warning")
+    if "user_id" not in session:
+        flash("You must be logged in as a user or user to view chat history.", "warning")
         return redirect(url_for("login"))
 
-    admin_id = session["admin_id"]
+    user_id = session["user_id"]
     db_session = SessionLocal()
-    admin = db_session.query(Admin).filter_by(admin_id=admin_id).first()
+    user = db_session.query(User).filter_by(user_id=user_id).first()
 
-    if not admin:
+    if not user:
         db_session.close()
         flash("User not found. Please log in again.", "danger")
         return redirect(url_for("login"))
 
-    if admin.is_admin:
+    if user.is_admin:
         db_session.close()
-        return redirect(url_for("cb_admin_view_history"))
+        return redirect(url_for("cb_user_view_history"))
 
     # Query only the user's sessions
-    history = db_session.query(Session).filter_by(admin_id=admin_id).all()
+    history = db_session.query(Session).filter_by(user_id=user_id).all()
     
     # Explicitly pass session IDs for deletion handling
     session_data = [
@@ -249,7 +249,7 @@ def view_history():
 
     return render_template(
         "cb_view_history.html",
-        username=admin.username,
+        username=user.username,
         history=session_data,  # Updated to a structured list
     )
 
@@ -257,17 +257,17 @@ def view_history():
 # CHATBOT
 @chatbotapp.route("/chat")
 def chat():
-    if "admin_id" not in session or "username" not in session:
+    if "user_id" not in session or "username" not in session:
         flash("You must be logged in to access chat.", "warning")
         return redirect(url_for("login"))
 
-    admin_id = session.get("admin_id")
+    user_id = session.get("user_id")
     username = session.get("username")
     session_id = request.args.get("session_id")
     db_session = SessionLocal()
-    admin = db_session.query(Admin).filter_by(admin_id=admin_id).first()
+    user = db_session.query(User).filter_by(user_id=user_id).first()
 
-    if not admin:
+    if not user:
         db_session.close()
         flash("User not found. Please log in again.", "danger")
         return redirect(url_for("login"))
@@ -279,16 +279,16 @@ def chat():
             flash("Session not found.", "danger")
             return redirect(url_for("success"))
 
-        # Admins can view all sessions but cannot modify those they don’t own
-        is_read_only = admin.is_admin and existing_session.admin_id != admin_id
-        streamlit_url = f"http://localhost:8501/?admin_id={admin_id}&username={username}&session_id={session_id}&read_only={is_read_only}"
+        # Users can view all sessions but cannot modify those they don’t own
+        is_read_only = user.is_admin and existing_session.user_id != user_id
+        streamlit_url = f"http://localhost:8501/?user_id={user_id}&username={username}&session_id={session_id}&read_only={is_read_only}"
     else:
-        # Allow admins to create new sessions
-        new_session = Session(admin_id=admin_id)
+        # Allow users to create new sessions
+        new_session = Session(user_id=user_id)
         db_session.add(new_session)
         db_session.commit()
         session_id = new_session.session_id
-        streamlit_url = f"http://localhost:8501/?admin_id={admin_id}&username={username}&session_id={session_id}&read_only=False"
+        streamlit_url = f"http://localhost:8501/?user_id={user_id}&username={username}&session_id={session_id}&read_only=False"
 
     db_session.close()
 
@@ -308,13 +308,13 @@ def chat():
 # DELETE USER SESSION
 @chatbotapp.route("/delete_session/<int:session_id>", methods=["POST"])
 def delete_session(session_id):
-    if "admin_id" not in session:
+    if "user_id" not in session:
         flash("Unauthorized access.", "danger")
         return redirect(url_for("view_history"))
 
-    admin_id = session["admin_id"]
+    user_id = session["user_id"]
     db_session = SessionLocal()
-    session_to_delete = db_session.query(Session).filter_by(session_id=session_id, admin_id=admin_id).first()
+    session_to_delete = db_session.query(Session).filter_by(session_id=session_id, user_id=user_id).first()
 
     if not session_to_delete:
         db_session.close()
@@ -337,17 +337,17 @@ def delete_session(session_id):
 @chatbotapp.route("/delete_user", methods=["GET", "POST"])
 def cb_delete_user():
     # Redirect to login if the user is not authenticated
-    if "admin_id" not in session:
-        flash("You must be logged in as an admin to view users.", "warning")
+    if "user_id" not in session:
+        flash("You must be logged in as an user to view users.", "warning")
         return redirect(url_for("login"))
 
     db_session = SessionLocal()
 
-    # Retrieve the logged-in admin
-    admin = db_session.query(Admin).filter_by(admin_id=session["admin_id"]).first()
-    if not admin or not admin.is_admin:
+    # Retrieve the logged-in user
+    user = db_session.query(User).filter_by(user_id=session["user_id"]).first()
+    if not user or not user.is_admin:
         db_session.close()
-        flash("Unauthorized access. Only admins can view and delete users.", "danger")
+        flash("Unauthorized access. Only users can view and delete users.", "danger")
         return redirect(url_for("home"))
 
     # Search and Pagination
@@ -356,15 +356,15 @@ def cb_delete_user():
     per_page = 10
     offset = (page - 1) * per_page
 
-    # Query users excluding admins
-    query = db_session.query(Admin).filter(Admin.is_admin == False)
+    # Query users excluding users
+    query = db_session.query(User).filter(User.is_admin == False)
 
     # Apply search filter (by username only)
     if search_query:
-        query = query.filter(Admin.username.ilike(f"%{search_query}%"))
+        query = query.filter(User.username.ilike(f"%{search_query}%"))
 
     # Sort alphabetically by username
-    query = query.order_by(Admin.username.asc())
+    query = query.order_by(User.username.asc())
 
     # Total number of users for pagination
     total_users = query.count()
@@ -375,7 +375,7 @@ def cb_delete_user():
     # Get session count for each user
     users_with_sessions = []
     for user in users:
-        session_count = db_session.query(Session).filter_by(admin_id=user.admin_id).count()
+        session_count = db_session.query(Session).filter_by(user_id=user.user_id).count()
         users_with_sessions.append({"user": user, "session_count": session_count})
 
     db_session.close()
@@ -383,8 +383,8 @@ def cb_delete_user():
     # Render the template with filtered results and pagination
     return render_template(
         "cb_delete_user.html",
-        username=admin.username,
-        is_admin=admin.is_admin,
+        username=user.username,
+        is_admin=user.is_admin,
         users_with_sessions=users_with_sessions,
         search_query=search_query,
         page=page,
@@ -396,21 +396,21 @@ def cb_delete_user():
 @chatbotapp.route("/delete_user/<int:user_id>", methods=["GET", "POST"])
 def delete_user(user_id):
     # Redirect to login if the user is not authenticated
-    if "admin_id" not in session:
-        flash("You must be logged in as an admin to delete users.", "warning")
+    if "user_id" not in session:
+        flash("You must be logged in as an user to delete users.", "warning")
         return redirect(url_for("login"))
 
     db_session = SessionLocal()
 
     try:
-        # Retrieve the logged-in admin
-        admin = db_session.query(Admin).filter_by(admin_id=session["admin_id"]).first()
-        if not admin or not admin.is_admin:
-            flash("Unauthorized access. Only admins can delete users.", "danger")
+        # Retrieve the logged-in user
+        user = db_session.query(User).filter_by(user_id=session["user_id"]).first()
+        if not user or not user.is_admin:
+            flash("Unauthorized access. Only users can delete users.", "danger")
             return redirect(url_for("home"))
 
         # Retrieve the user to be deleted
-        user_to_delete = db_session.query(Admin).filter_by(admin_id=user_id).first()
+        user_to_delete = db_session.query(User).filter_by(user_id=user_id).first()
         if not user_to_delete:
             flash("User not found.", "danger")
             return redirect(url_for("cb_delete_user"))
@@ -423,9 +423,9 @@ def delete_user(user_id):
             )).delete(synchronize_session='fetch')
 
             # Delete the user's sessions
-            db_session.query(Session).filter_by(admin_id=user_id).delete(synchronize_session='fetch')
+            db_session.query(Session).filter_by(user_id=user_id).delete(synchronize_session='fetch')
 
-            # Delete the user from the Admin table
+            # Delete the user from the User table
             db_session.delete(user_to_delete)
             db_session.commit()
 
@@ -435,7 +435,7 @@ def delete_user(user_id):
         # Render the delete confirmation page
         return render_template(
             "cb_delete_user_confirm.html",
-            username=admin.username,
+            username=user.username,
             user_to_delete=user_to_delete,
         )
     finally:
@@ -456,4 +456,4 @@ def logout():
 
 # MAIN PORT
 if __name__ == "__main__":
-    chatbotapp.run(debug=True, port=5000)
+    chatbotapp.run(debug=False, port=5000)

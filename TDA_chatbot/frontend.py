@@ -27,8 +27,8 @@ SessionLocal = sessionmaker(bind=engine)
 # Initialize session state
 if "model_name" not in st.session_state:
     st.session_state["model_name"] = None
-if "authenticated_admin" not in st.session_state:
-    st.session_state["authenticated_admin"] = None
+if "authenticated_user" not in st.session_state:
+    st.session_state["authenticated_user"] = None
 if "session_id" not in st.session_state:
     st.session_state["session_id"] = None
 if "messages" not in st.session_state:
@@ -41,25 +41,25 @@ if "is_admin" not in st.session_state:
     st.session_state["is_admin"] = False
 
 # Database models
-class Admin(Base):
-    __tablename__ = "admin"
-    admin_id = Column(Integer, primary_key=True, autoincrement=True)
+class User(Base):
+    __tablename__ = "user"
+    user_id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, nullable=False)
     password = Column(String, nullable=False)
-    sessions = relationship("Session", back_populates="admin")
+    sessions = relationship("Session", back_populates="user")
     is_admin = Column(Boolean, default=False)
 
 
 class Session(Base):
     __tablename__ = "sessions"
     session_id = Column(Integer, primary_key=True, autoincrement=True)
-    admin_id = Column(Integer, ForeignKey("admin.admin_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user.user_id"), nullable=False)
     start_time = Column(DateTime, default=datetime.utcnow)
     end_time = Column(DateTime)
     session_name = Column(String, default="Untitled Session")
     messages = relationship("Message", back_populates="session")
-    admin = relationship("Admin", back_populates="sessions")
+    user = relationship("User", back_populates="sessions")
 
 
 class Message(Base):
@@ -82,8 +82,8 @@ def generate_response_with_spinner():
     return "Here is the AI-generated response."
 
 # Function to generate a default session name
-def generate_session_name(admin_username):
-    return f"Session-{admin_username}-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}"
+def generate_session_name(user_username):
+    return f"Session-{user_username}-{datetime.utcnow().strftime('%Y%m%d%H%M%S')}"
 
 # Function to save messages to the database
 def save_message(role, content):
@@ -123,19 +123,19 @@ if "read_only" in query_params:
 else:
     st.session_state["read_only"] = False
 
-if "admin_id" in query_params and "username" in query_params and "session_id" in query_params:
-    admin_id = int(query_params["admin_id"])
+if "user_id" in query_params and "username" in query_params and "session_id" in query_params:
+    user_id = int(query_params["user_id"])
     username = query_params["username"]
     session_id = int(query_params["session_id"])
 
     db_session = SessionLocal()
-    admin = db_session.query(Admin).filter_by(admin_id=admin_id, username=username).first()
+    user = db_session.query(User).filter_by(user_id=user_id, username=username).first()
     session_instance = db_session.query(Session).filter_by(session_id=session_id).first()
     db_session.close()
 
-    if admin and session_instance:
+    if user and session_instance:
         st.session_state["session_id"] = session_id
-        st.session_state["read_only"] = admin.admin_id != session_instance.admin_id
+        st.session_state["read_only"] = user.user_id != session_instance.user_id
         
         db_session = SessionLocal()
         messages = db_session.query(Message).filter_by(session_id=session_id).order_by(Message.timestamp.asc()).all()
@@ -147,7 +147,7 @@ if "admin_id" in query_params and "username" in query_params and "session_id" in
         st.error("Invalid session. Please check the session ID.")
         st.stop()
 else:
-    st.error("Missing query parameters: admin_id, username, or session_id.")
+    st.error("Missing query parameters: user_id, username, or session_id.")
     st.stop()
 
 
