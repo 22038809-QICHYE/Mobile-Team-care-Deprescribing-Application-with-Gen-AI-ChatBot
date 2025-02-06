@@ -155,7 +155,7 @@ def create_user():
 
 
 # ADMIN DASHBOARD
-@chatbotapp.route("/cb_user_view_history", methods=["GET", "POST"])
+@chatbotapp.route("/cb_admin_view_history", methods=["GET", "POST"])
 def cb_user_view_history():
     if "user_id" not in session:
         flash("You must be logged in as an user to view chat history.", "warning")
@@ -184,7 +184,7 @@ def cb_user_view_history():
     db_session.close()
     
     return render_template(
-        "cb_user_view_history.html",
+        "cb_admin_view_history.html",
         username=user.username,
         is_admin=user.is_admin,
         history=history,
