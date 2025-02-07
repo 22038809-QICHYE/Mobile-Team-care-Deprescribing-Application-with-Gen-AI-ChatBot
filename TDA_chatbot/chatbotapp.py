@@ -75,7 +75,7 @@ def login():
             session["username"] = user.username
             db_session.close()
             if user.is_admin:
-                return redirect(url_for("cb_user_view_history"))
+                return redirect(url_for("cb_admin_view_history"))
             return redirect(url_for("success"))
         else:
             db_session.close()
@@ -156,7 +156,7 @@ def create_user():
 
 # ADMIN DASHBOARD
 @chatbotapp.route("/cb_admin_view_history", methods=["GET", "POST"])
-def cb_user_view_history():
+def cb_admin_view_history():
     if "user_id" not in session:
         flash("You must be logged in as an user to view chat history.", "warning")
         return redirect(url_for("login"))
@@ -212,7 +212,7 @@ def view_history():
 
     if user.is_admin:
         db_session.close()
-        return redirect(url_for("cb_user_view_history"))
+        return redirect(url_for("cb_admin_view_history"))
 
     # Query only the user's sessions
     history = db_session.query(Session).filter_by(user_id=user_id).all()
