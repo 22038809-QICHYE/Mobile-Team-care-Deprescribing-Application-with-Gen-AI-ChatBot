@@ -12,7 +12,7 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, "Upload")
 
 app = Flask(__name__)
 app.secret_key = "AAA"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite3'  # Single database for both models
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.sqlite3'  
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = {'pdf','csv'}
@@ -20,7 +20,6 @@ app.permanent_session_lifetime = timedelta(minutes=5)
 
 db = SQLAlchemy(app)
 
-#class User(db.Model)
 
 class User(db.Model):
     _id = db.Column("user_id", db.Integer, primary_key=True)
@@ -123,18 +122,18 @@ def view_post():
                 documents = Ingestion_file().chunk_pdf_text(file_path)
                 if documents:
                     # Getting name of current collection
-                    chroma_manager.set_active_collection("Unstructured_data") # QC 
-                    current_collection=chroma_manager.get_current_collection() # QC 
-                    print(f"Currently using {current_collection} collection.") # QC 
+                    chroma_manager.set_active_collection("Unstructured_data") # QChye 
+                    current_collection=chroma_manager.get_current_collection() # QChye 
+                    print(f"Currently using {current_collection} collection.") # QChye 
                     #(ChromaManager initialized the default to "Structured_data" collection so need to switch it to "Unstructured_data" collection)
-                    chroma_manager.add_documents(documents) # QC
+                    chroma_manager.add_documents(documents) # QChye
                     flash(f"Processed and indexed {len(documents)} documents!")
             elif filename.lower().endswith('.csv'):
                 documents = Ingestion_file().chunk_csv_text(file_path)
                 if documents:
-                    current_collection=chroma_manager.get_current_collection() # QC 
-                    print(f"Currently using {current_collection} collection.") # QC 
-                    chroma_manager.add_documents(documents) # QC
+                    current_collection=chroma_manager.get_current_collection() # QChye 
+                    print(f"Currently using {current_collection} collection.") # QChye 
+                    chroma_manager.add_documents(documents) # QChye
                     flash(f"Processed and indexed {len(documents)} documents!")
             else:
                 flash("Only PDF and CSV files are allowed.")
