@@ -25,7 +25,7 @@ class Ingestion_file:
             print(f"Error reading PDF file: {e}")
         return text
 
-    def chunk_pdf_text(self, pdf_path, chunk_size=750, chunk_overlap=250, debug=False):
+    def chunk_pdf_text(self, pdf_path, chunk_size=1000, chunk_overlap=500, debug=False):
 
         pdf_text = self.extract_text_from_pdf(pdf_path)
 
