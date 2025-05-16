@@ -46,7 +46,7 @@ To install the TDA Chatbot, please follow these steps:
 
    ```
 
-3. Obtain an API key from OpenAI and add it to the `.env` file in the project directory.
+3. Obtain an API key from OpenAI and Redis and add it to the `.env` file in the project directory.
    ```
    CHROMA_PATH = "C:\VS_CODES\RAG\Collections"
    COLLECTION_NAME_S="Structured_data"
